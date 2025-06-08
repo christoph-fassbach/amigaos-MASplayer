@@ -1,6 +1,7 @@
 # Origin:
 
-https://aminet.net/driver/audio/mhi_dev.lha
+* 1.2 - https://aminet.net/driver/audio/mhi_dev.lha
+* 1.6 - https://aminet.net/driver/audio/mhimasplayer.lha
 
 # Legal:
 
