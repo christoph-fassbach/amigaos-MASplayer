@@ -38,11 +38,14 @@
  */
 /* MHI DCR MAS-Player library */
 
-#include <clib/exec_protos.h>
-#include <clib/alib_protos.h>
-#include <clib/cia_protos.h>
-#include <clib/misc_protos.h>
-#include <clib/dos_protos.h>
+// Yes, we want to use the pragmas/cia_pragmas.h for SAS/C.
+#define __USE_CIA_STUBS
+
+#include <proto/exec.h>
+#include <proto/alib.h>
+#include <proto/cia.h>
+#include <proto/misc.h>
+#include <proto/dos.h>
 
 #include <exec/libraries.h>
 #include <exec/types.h>
@@ -53,30 +56,19 @@
 #include <hardware/cia.h>
 #include <resources/cia.h>
 #include <resources/misc.h>
-#include <clib/debug_protos.h>
 
-#include <libraries/mhi.h>
-#include "mhilib.h"
-#include "version.h"
+#include "libraries/mhi.h"
 
-// Comment out to enable debug output:
-#define KPrintF(...)
+#include "debug.h"
+#include "mas_mhi.h"
+#include "mas3507.h"
+#include "mas_interrupts.h"
 
-
-#pragma libbase MHIBase
-
-extern void dcr_pro_int();
-extern void SetupParPort();
-extern void SetVolume(ULONG l asm("d0"), ULONG r asm("d1"));
-extern void SetPrefactor(UWORD prefac asm("d0"));
-extern void SetBass(UWORD bass asm("d0"));
-extern void SetTreble(UWORD treb asm("d0"));
 
 /* volume
  * first is loudest
  * 21 total
  */
-
 const ULONG voltab[21] = 
 	{0x80000,0x8DEB8,0x9A537,0xA5621,0xAF3CD,0xB8053,0xBFD92,0xC6D31,
 	 0xCD0AD,0xD2958,0xD785E,0xDBECC,0xDFD91,0xE3583,0xE675F,0xE93CF,
@@ -149,35 +141,31 @@ struct freetimer ft;
 
 struct LibBase *GFXBase;
 
-BOOL UserLibInit(struct MHI_LibBase *MhiLibBase) {
-	return TRUE;
-}
-
-void UserLibCleanup(struct MHI_LibBase *MhiLibBase) {
-}
-
 /* --------------------------------------------------------------------- */
 /*                             Start of code                             */
 /* --------------------------------------------------------------------- */
 
-APTR i_MHIAllocDecoder(struct Task *task asm("a0"), ULONG mhisignal asm("d0"))
+ASM( APTR ) SAVEDS MHIAllocDecoder(
+  REG( a0, struct Task * task ),
+  REG( d0, ULONG signal ),
+  REG( a6, struct MHI_LibBase * base ))
 /* Allocate MHI. Open all needed resources etc, and be prepared
 	to output.
 
 	*task is the task that wants signals
-	mhisignal is the signal mask to use
+	signal is the signal mask to use
 */
 {
 	struct MPHandle *handle;
-	KPrintF("MHIAllocDecoder...\n");
-	if( !( GFXBase = (struct LibBase *) OpenLibrary("graphics.library",0)) )
+	LOG_D(("MHIAllocDecoder...\n"));
+	if( !( GFXBase = (struct LibBase *) OpenLibrary("graphics.library", 0)) )
 		return 0L;		/* ech! */
-	KPrintF("MHIAllocDecoder: gfx opened.\n");	
+	LOG_D(("MHIAllocDecoder: gfx opened at 0x%08lx.\n", GFXBase));
 	if(!mhiallocated) {
 		if( handle = AllocMem(sizeof(struct MPHandle), MEMF_CLEAR) )
 		{
 			handle->task = task;
-			handle->mhisignal = mhisignal;
+			handle->mhisignal = signal;
 			handle->status = MHIF_STOPPED;
 
 			handle->volume		= 100;
@@ -193,28 +181,28 @@ APTR i_MHIAllocDecoder(struct Task *task asm("a0"), ULONG mhisignal asm("d0"))
 				if( ((owner = AllocMiscResource(MR_PARALLELPORT, "MHI")) == NULL)
 				&&	  ((owner = AllocMiscResource(MR_PARALLELBITS, "MHI")) == NULL) )
 				{
-					KPrintF("MHIAllocDecoder: SetupParPort()\n");	
-					SetupParPort();	// set par port bits
+					LOG_D(("MHIAllocDecoder: SetupParPort()\n"));
+					SetupParPort(base);	// set par port bits
 
-					KPrintF("MHIAllocDecoder: SetVolume()\n");	
-					SetVolume(voltab[0], voltab[0]);
-					KPrintF("MHIAllocDecoder: SetPrefactor()\n");	
-					SetPrefactor(preftab[0]);
-					KPrintF("MHIAllocDecoder: SetBass()\n");	
-					SetBass(basstab[15]);
-					KPrintF("MHIAllocDecoder: SetTreble()\n");	
-					SetTreble(trebtab[15]);
+					LOG_D(("MHIAllocDecoder: SetVolume()\n"));
+					SetVolume(voltab[0], voltab[0], base);
+					LOG_D(("MHIAllocDecoder: SetPrefactor()\n"));
+					SetPrefactor(preftab[0], base);
+					LOG_D(("MHIAllocDecoder: SetBass()\n"));
+					SetBass(basstab[15], base);
+					LOG_D(("MHIAllocDecoder: SetTreble()\n"));
+					SetTreble(trebtab[15], base);
 
 					ft.timerint.is_Node.ln_Type 	= NT_INTERRUPT;
 					ft.timerint.is_Node.ln_Pri 	= 0;
 					ft.timerint.is_Node.ln_Name 	= "MHI_MAS_Player_Pro";
 					ft.timerint.is_Data 				= handle;
-					ft.timerint.is_Code 				= dcr_pro_int;
+					ft.timerint.is_Code 				= (VOID (*)()) dcr_pro_int;
 
-					KPrintF("MHIAllocDecoder: FindFreeTimer()\n");	
+					LOG_D(("MHIAllocDecoder: FindFreeTimer()\n"));
 					if(FindFreeTimer(&ft,TRUE))
 					{
-						KPrintF("MHIAllocDecoder: StartTimer()\n");	
+						LOG_D(("MHIAllocDecoder: StartTimer()\n"));
 						StartTimer(&ft);
 
 						/* setup main list */
@@ -222,7 +210,7 @@ APTR i_MHIAllocDecoder(struct Task *task asm("a0"), ULONG mhisignal asm("d0"))
 						BufList.mlh_Tail		= 0;
 						BufList.mlh_TailPred	= (struct MinNode *) &BufList.mlh_Head;
 						mhiallocated = TRUE;
-						KPrintF("MHIAllocDecoder: return handle\n");
+						LOG_D(("MHIAllocDecoder: return handle\n"));
 						return handle;
 					}
 				}
@@ -230,11 +218,13 @@ APTR i_MHIAllocDecoder(struct Task *task asm("a0"), ULONG mhisignal asm("d0"))
 		}
 	}
 
-	KPrintF("MHIAllocDecoder: return NULL\n");
+	LOG_D(("MHIAllocDecoder: return NULL\n"));
 	return 0L;
 }
 
-VOID i_MHIFreeDecoder(APTR handle asm("a3"))
+ASM( VOID ) SAVEDS MHIFreeDecoder(
+  REG( a3, struct MHI_LibBase_Handlmas_std_interrupte * handle ),
+  REG( a6, struct MHI_LibBase * base ))
 /* Free MHI and all resources
 */
 {
@@ -259,12 +249,16 @@ VOID i_MHIFreeDecoder(APTR handle asm("a3"))
 	}
 }
 
-BOOL i_MHIQueueBuffer(struct MPHandle *handle asm("a3"), APTR buffer asm("a0"), ULONG size asm("d0")) {
+ASM( BOOL ) SAVEDS MHIQueueBuffer(
+  REG( a3, struct MPHandle * handle ),
+  REG( a0, APTR buffer ),
+  REG( d0, ULONG size),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Add this buffer to the queue
 	*/
 	struct MPBufferNode *newnode;
 
-	KPrintF("MHIQueueBuffer(size=%ld)\n", size);
+	LOG_D(("MHIQueueBuffer(size=%ld)\n", size));
 
 	if(!( newnode = AllocMem(sizeof(struct MPBufferNode), MEMF_CLEAR))) {
 		return FALSE;
@@ -282,7 +276,9 @@ BOOL i_MHIQueueBuffer(struct MPHandle *handle asm("a3"), APTR buffer asm("a0"), 
 	}
 }
 
-APTR i_MHIGetEmpty(struct MPHandle *handle asm("a3")) {
+ASM( APTR ) SAVEDS MHIGetEmpty(
+  REG( a3, struct MPHandle * handle ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Find the next empty buffer node and return the buffers address
 	*/
 	struct MPBufferNode *mynode;
@@ -307,19 +303,25 @@ APTR i_MHIGetEmpty(struct MPHandle *handle asm("a3")) {
 	}
 }
 
-UBYTE i_MHIGetStatus(struct MPHandle *handle asm("a3")) {
+ASM( UBYTE ) SAVEDS MHIGetStatus(
+  REG( a3, struct MPHandle * handle ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Get the MHI players status flags
 	*/
 	return handle->status;
 }
 
-VOID i_MHIPlay(struct MPHandle *handle asm("a3")) {
+ASM( VOID ) SAVEDS MHIPlay(
+  REG( a3, struct MPHandle * handle ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Set the player to play mode
 	*/
 	handle->status = MHIF_PLAYING;
 }
 
-VOID i_MHIStop(struct MPHandle *handle asm("a3")) {
+ASM( VOID ) SAVEDS MHIStop(
+  REG( a3, struct MPHandle * handle ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Stop the player and free all buffers
 	*/
 	APTR killednode;
@@ -331,7 +333,9 @@ VOID i_MHIStop(struct MPHandle *handle asm("a3")) {
 		FreeMem(killednode, sizeof(struct MPBufferNode));	
 }
 
-VOID i_MHIPause(struct MPHandle *handle asm("a3")) {
+ASM( VOID ) SAVEDS MHIPause(
+  REG( a3, struct MPHandle * handle ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Pause the player
 	*/
 	if(handle->status == MHIF_PAUSED)			/* Unpause */
@@ -341,10 +345,12 @@ VOID i_MHIPause(struct MPHandle *handle asm("a3")) {
 			handle->status = MHIF_PAUSED;
 }
 
-ULONG i_MHIQuery(ULONG query asm("d1")) {
+ASM( ULONG ) SAVEDS MHIQuery(
+  REG( d1, ULONG query ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Respond to a feature query from an application
 	*/
-	KPrintF("MHIQuery(%ld)\n", query);
+	LOG_D(("MHIQuery(%ld)\n", query));
 	switch (query) {
 		case MHIQ_MPEG1: case MHIQ_MPEG2: case MHIQ_MPEG25:
 			return MHIF_SUPPORTED;
@@ -397,11 +403,11 @@ ULONG i_MHIQuery(ULONG query asm("d1")) {
 			break;
 
 		case MHIQ_DECODER_VERSION:
-			return (ULONG)IDSTRING;
+			return (ULONG)LIBRARY_IDSTRING;
 			break;
 			
 		case MHIQ_AUTHOR:
-			return (ULONG)"Paul Qureshi, Thomas Wenzel";
+			return (ULONG)"Paul Qureshi, Thomas Wenzel, Christoph Fassbach";
 			break;
 			
 		default:
@@ -410,7 +416,7 @@ ULONG i_MHIQuery(ULONG query asm("d1")) {
 	}
 }
 
-static void setVolPan(struct MPHandle *handle) {
+static void setVolPan(struct MPHandle *handle, struct MHI_LibBase * base) {
 	LONG VolL, VolR;
 	ULONG MasL, MasR;
 	
@@ -441,25 +447,29 @@ static void setVolPan(struct MPHandle *handle) {
 	
 	handle->oldstatus = handle->status;
 	handle->status = MHIF_PAUSED;
-	SetVolume(MasL, MasR);
+	SetVolume(MasL, MasR, base);
 	handle->status = handle->oldstatus;
 }
 
-VOID i_MHISetParam(struct MPHandle *handle asm("a3"), UWORD param asm("d0"), ULONG value asm("d1")) {
+ASM( VOID ) SAVEDS MHISetParam(
+  REG( a3, struct MPHandle * handle ),
+  REG( d0, UWORD param ),
+  REG( d1, ULONG value ),
+  REG( a6, struct MHI_LibBase * base )) {
 	/* Set decoder parameter.
 	*/
-	LONG calc;
+	WORD calc;
 	UBYTE r;
 	UBYTE l;
 
-	KPrintF("MHISetParam(handle=0x%08lX, %ld=%ld)\n", handle, param, value);
+	LOG_D(("MHISetParam(handle=0x%08lX, %ld=%ld)\n", handle, param, value));
 
 	switch (param) {
 		case MHIP_VOLUME:
 			if(value != handle->volume) {
 				handle->volume = value;
 				#if 1
-				setVolPan(handle);
+				setVolPan(handle, base);
 				#else
 				value = handle->panning;
 
@@ -495,7 +505,7 @@ VOID i_MHISetParam(struct MPHandle *handle asm("a3"), UWORD param asm("d0"), ULO
 			if(value != handle->panning) {
 				handle->panning = value;
 				#if 1
-				setVolPan(handle);
+				setVolPan(handle, base);
 				#else
 				if(value > 50) {		// pan to right
 					r = (float)(100 - ( handle->volume * ((100-value)*0.02) )) * 0.2;
@@ -545,7 +555,7 @@ VOID i_MHISetParam(struct MPHandle *handle asm("a3"), UWORD param asm("d0"), ULO
 				else {
 					calc=0;
 				}
-				SetPrefactor(preftab[calc]);
+				SetPrefactor(preftab[calc], base);
 			}
 			break;
 
@@ -557,7 +567,7 @@ VOID i_MHISetParam(struct MPHandle *handle asm("a3"), UWORD param asm("d0"), ULO
 				calc /= 100;
 				if(calc > 30) calc = 30;
 				if(calc <  0) calc =  0;
-				SetBass(basstab[calc]);
+				SetBass(basstab[calc], base);
 			}
 			break;
 
@@ -569,7 +579,7 @@ VOID i_MHISetParam(struct MPHandle *handle asm("a3"), UWORD param asm("d0"), ULO
 				calc /= 100;
 				if(calc > 30) calc = 30;
 				if(calc <  0) calc = 0;
-				SetTreble(trebtab[calc]);
+				SetTreble(trebtab[calc], base);
 			}
 			break;
 	}
@@ -638,7 +648,7 @@ BOOL FindFreeTimer(struct freetimer *ft, int preferA) {
 	}
 
 	if(TryTimer(ft)) {
-		KPrintF("MHIAllocDecoder: FindFreeTimer() -> CIA-A\n");	
+		LOG_D(("MHIAllocDecoder: FindFreeTimer() -> CIA-A\n"));
 		return TRUE;
 	}
 
@@ -652,16 +662,14 @@ BOOL FindFreeTimer(struct freetimer *ft, int preferA) {
 	}
 
 	if(TryTimer(ft)) {
-		KPrintF("MHIAllocDecoder: FindFreeTimer() -> CIA-B\n");	
+		LOG_D(("MHIAllocDecoder: FindFreeTimer() -> CIA-B\n"));
 		return TRUE ;
 	}
 
-	KPrintF("MHIAllocDecoder: FindFreeTimer() -> FAIL\n"); 
+	LOG_D(("MHIAllocDecoder: FindFreeTimer() -> FAIL\n"));
 	return FALSE ;
 
 }
-
-
 
 BOOL TryTimer(struct freetimer *ft)
 {

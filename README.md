@@ -34,3 +34,8 @@ V1.5:
 
 V1.6:
   - fixed driver so that it doesn't mess with the serial port.
+
+V1.7:
+  - Backport to OS 1.3 / v34
+  - Port to SAS/C + VBCC + VASM for 68000 compatibility
+  - License change - code is now partially under LGPL 3

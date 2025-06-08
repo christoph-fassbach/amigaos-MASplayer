@@ -36,6 +36,7 @@
 * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 * DAMAGE.
 *
+
 *a2
 *struct MPHandle
 *{
@@ -54,7 +55,9 @@
 *   APTR    pos;                    4   12
 *   ULONG   bytesleft;              4   16
 *};
+
 	INCLUDE "lvo/exec_lib.i"
+
 *****************************************************************
 
 	xdef	_dcr_pro_int
@@ -132,7 +135,7 @@ no_zero:
 quick_exit:
 
 *	movem.l	(a7)+,d0-d7/a0-a3	; restore registers
-*	bset.b	#1,$bfe001			; led off        
+*	bset.b	#1,$bfe001			; led off
 *	moveq	#0,d0
 	rts
 
