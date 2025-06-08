@@ -1,0 +1,1 @@
+FD2Pragma SPECIAL 5 INFILE Fireball:StormC/Projects/mhidcr/mhi_lib.fd TO Fireball:StormC/Projects/mhidcr/mhi_lib.h EXTERNC HEADER @ MODE 1

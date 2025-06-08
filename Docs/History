@@ -1,0 +1,17 @@
+History:
+
+V1.0:
+  - First public release
+
+V1.1:
+  - Added MHIQ_PREFACTOR_CONTROL query
+  - Added Blitz II support includes (thanks Doobrey)
+  - ** Corrected a couple of typos in the includes **
+       make sure you are using the correct spelling
+       of MHIQ_JOINT_STEREO !!
+
+V1.2:
+  - Added MHIQ_CAPABILITIES query
+  - Added MHIQ_5_BAND_EQ and MHIQ_10_BAND_EQ queries
+  - Added MHIP_MIDBASS and MHIP_MIDHIGH parameters
+  - Added MHIP_BAND1 .. MHIP_BAND10 parameters

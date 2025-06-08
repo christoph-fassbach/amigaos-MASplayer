@@ -1,0 +1,29 @@
+Short:    MHI Dev - The new standard in MPEG audio
+Author:   Paul Qureshi <paul.qureshi@btinternet.com> And
+          Thomas Wenzel <http://www.toms-home.de>
+Type:     mus/play
+Version:  1.2
+
+Note:
+Aminet admins only: Use address from [Uploader] field to contact me
+All others: Use the email address stated on my homepage www.toms-home.de
+
+MHI is a new standard for MPEG audio on the Amiga. It was created by Thomas
+Wenzel and Paul Qureshi, with help from Dirk Conrad, because current systems
+(mpega.library and the mpeg.device) do not offer the features modern
+applications such as AmigaAMP require.
+
+This archive contains everything you need to develop programs using MHI and
+MHI drivers for new hardware or software decoders. Please support MHI, we
+really think it's the best possible solution for playing MPEG audio on
+AmigaOS!
+
+Thanks to Doobrey for the Blitz II include file!
+
+What's new in v1.2?
+-------------------
+ - Added new queries and parameters to make it easy to go beyond MPEG audio.
+ - Added new queries and parameters to support 5-band and 10-band equalizers.
+ - Fixed MASPlayerDriver so that it doesn't trash register A6 any more.
+ - Recompiled MASPlayerDriver with amiga-gcc.
+
