@@ -11,17 +11,26 @@ See LICENSE.md.
 # History:
 
 V1.0:
-  - First public release
+  - internal test release
+  - basics working
 
-V1.1:
-  - Added MHIQ_PREFACTOR_CONTROL query
-  - Added Blitz II support includes (thanks Doobrey)
-  - ** Corrected a couple of typos in the includes **
-       make sure you are using the correct spelling
-       of MHIQ_JOINT_STEREO !!
+V1.2 Final:
+  - volume and tone control working
+  - optimised code a little
+  - 4 byte memory leak fixed
 
-V1.2:
-  - Added MHIQ_CAPABILITIES query
-  - Added MHIQ_5_BAND_EQ and MHIQ_10_BAND_EQ queries
-  - Added MHIP_MIDBASS and MHIP_MIDHIGH parameters
-  - Added MHIP_BAND1 .. MHIP_BAND10 parameters
+V1.4:
+  - added support for latest MAS Players (thanks Dirk!)
+  - fixed MHIQuery() returns for tone control
+  - updated to meet MHI 1.1 standard
+  - increased interrupt frequency, more load in slow CPUs
+    but now supports higher bit rates
+  - added panning control
+
+V1.5:
+  - updated to meet MHI 1.2 standard
+  - fixed driver so that it doesn't trash register A6 any more.
+  - recompiled with amiga-gcc.
+
+V1.6:
+  - fixed driver so that it doesn't mess with the serial port.

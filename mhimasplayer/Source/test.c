@@ -4,21 +4,20 @@
 #include <pragma/exec_lib.h>
 #include <pragma/dos_lib.h>
 #include <dos/dos.h>
-
-#include <mhi.h>
-#include <clib/mhi_protos.h>
-#include <mhi_lib.h>
+#include <proto/mhi.h>
+#include <libraries/mhi.h>
 
 #define NUMBUFS	7
 #define BUFSIZE	10000
 						//12800
 						//204800
 
-struct LibBase *MHIBase;
+struct Library *MHIBase;
 
-void main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
 	char temp;
+	char *string;
 	struct Task *mytask;
 	BYTE	mysignal;
 	ULONG	sigmask, tempsigs;
@@ -37,13 +36,13 @@ void main(int argc, char *argv[])
 	if (-1 == (mysignal = AllocSignal(-1)))
 	{
 		printf("No signals available! Crazy man!\n");
-		exit(20);
+		return 20;
 	}
 
 	sigmask = 1L << mysignal;
 	printf("My signal mask: %ld\n",sigmask);
 
-	if (MHIBase = (struct LibBase *) OpenLibrary("mhi/mhimaspro.library",0))
+	if (MHIBase = (struct Library *) OpenLibrary("mhi/mhimaspro.library",0))
 	{
 		printf("Allocating MHI\n");
 		handle = MHIAllocDecoder(mytask, sigmask);
@@ -60,11 +59,18 @@ void main(int argc, char *argv[])
 			printf("Allocation failed, returned %ld\n",handle2);
 			
 		printf("\nDecoder details:\n");
-		printf("Name:    %s\n", MHIQuery(MHIQ_DECODER_NAME));
-		printf("Version: %s\n", MHIQuery(MHIQ_DECODER_VERSION));
-		printf("Author:  %s\n", MHIQuery(MHIQ_AUTHOR));
+		printf("Name:    %s\n", (char*)MHIQuery(MHIQ_DECODER_NAME));
+		printf("Version: %s\n", (char*)MHIQuery(MHIQ_DECODER_VERSION));
+		printf("Author:  %s\n", (char*)MHIQuery(MHIQ_AUTHOR));
 
 		printf("\nQuerying decoder abilities:\n");
+		printf("MIME types: 			  ");
+		if((string = (char*)MHIQuery(MHIQ_CAPABILITIES))) {
+			printf("%s\n", string);
+		}
+		else {
+			printf("not specified\n");
+		}
 
 		printf("Supported MPEG versions:  ");
 		if ( MHIQuery(MHIQ_MPEG1) )
@@ -92,8 +98,8 @@ void main(int argc, char *argv[])
 		else
 			printf("No\n");
 			
-		printf("Joint sterio encoding:    ");
-		if ( MHIQuery(MHIQ_JOINT_STERIO) )
+		printf("Joint stereo encoding:    ");
+		if ( MHIQuery(MHIQ_JOINT_STEREO) )
 			printf("Yes\n");
 		else
 			printf("No\n");
@@ -116,9 +122,21 @@ void main(int argc, char *argv[])
 		else
 			printf("No\n");
 
+		printf("5-band equalizer:         ");
+		if ( MHIQuery(MHIQ_5_BAND_EQ) )
+			printf("Yes\n");
+		else
+			printf("No\n");
+
+		printf("10-band equalizer:        ");
+		if ( MHIQuery(MHIQ_10_BAND_EQ) )
+			printf("Yes\n");
+		else
+			printf("No\n");
+
 		if (argc != 0)
 		{
-			printf("\MHI Status: %ld", MHIGetStatus(handle));
+			printf("\nMHI Status: %ld", MHIGetStatus(handle));
 
 			printf("\nBuffering MPEG audio stream..\n");
 		
@@ -250,5 +268,6 @@ void main(int argc, char *argv[])
 		FreeSignal(mysignal);
 	}
 	else
-		printf("Unable to open \"mhidcr.library\".");
+		printf("Unable to open \"mhimaspro.library\".");
 }
+

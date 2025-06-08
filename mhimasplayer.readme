@@ -1,0 +1,46 @@
+Short:        MHI driver for MAS-Player (standard/pro)
+Author:       Paul Qureshi <paul.qureshi@btinternet.com>, Thomas Wenzel <http://www.toms-home.de>
+Type:         driver/audio
+Version:      1.6
+Architecture: m68k-amigaos
+Replaces:     driver/audio/mhi_MASPro.lha;driver/audio/mhi_MASStd.lha
+
+Note:
+Aminet admins only: Use address from [Uploader] field to contact me
+All others: Use the email address stated on my homepage www.toms-home.de
+
+MHI is a standard for MPEG audio on the Amiga. It was created by Thomas
+Wenzel and Paul Qureshi, with help from Dirk Conrad, because current systems
+(mpega.library and the mpeg.device) do not offer the features modern
+applications such as AmigaAMP require.
+
+These are the MAS Player (standard and pro) drivers for MHI.
+They work well with the latest AmigaAMP!
+
+History:
+
+V1.0:
+  - internal test release
+  - basics working
+
+V1.2 Final:
+  - volume and tone control working
+  - optimised code a little
+  - 4 byte memory leak fixed
+
+V1.4:
+  - added support for latest MAS Players (thanks Dirk!)
+  - fixed MHIQuery() returns for tone control
+  - updated to meet MHI 1.1 standard
+  - increased interrupt frequency, more load in slow CPUs
+    but now supports higher bit rates
+  - added panning control
+
+V1.5:
+  - updated to meet MHI 1.2 standard
+  - fixed driver so that it doesn't trash register A6 any more.
+  - recompiled with amiga-gcc.
+
+V1.6:
+  - fixed driver so that it doesn't mess with the serial port.
+

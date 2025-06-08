@@ -11,11 +11,11 @@ _SetupParPort:
 
 	movel	a6,-(sp)
 
-	move.b  #0b00000000,0xbfd200
-	move.b  #0b00000011,0xbfe101
-	move.b  #0b00010011,0xbfe301
-	move.b  #0b00000011,0xbfe301
-	move.b  #0b00000011,0xbfe101
+	andi.b  #0b11111000,0xbfd200 | ciab ddra: Set SEL,POUT and BUSY to input.
+	move.b  #0b00000011,0xbfe101 | ciaa prb  (Parallel port)
+	move.b  #0b00010011,0xbfe301 | ciaa ddrb (Data direction for Parallel port)
+	move.b  #0b00000011,0xbfe301 | ciaa ddrb (Data direction for Parallel port)
+	move.b  #0b00000011,0xbfe101 | ciaa prb  (Parallel port)
 
 	lea		0xbfe301,a1
 	bsr		Write_IIC_S
