@@ -61,7 +61,7 @@
 /******************************************************************************
  * Define your library's base type here, will be used in library.c.
  *****************************************************************************/
-#define LIBRARY_TYPE      struct MHI_LibBase
+#define LIBRARY_TYPE      struct MASplayer_MHI
 
 LIBRARY_TYPE;
 

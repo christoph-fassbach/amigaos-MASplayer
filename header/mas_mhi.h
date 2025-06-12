@@ -55,11 +55,11 @@
 
 #include "library.h"
 
-struct MHI_LibBase {
+struct MASplayer_MHI {
 
-  struct BaseLibrary mhi_Library;
-  struct ExecBase *mhi_SysBase;
-  struct DosLibrary *mhi_DOSBase;
+  struct BaseLibrary  mhi_Library;
+  struct ExecBase   * mhi_SysBase;
+  struct DosLibrary * mhi_DOSBase;
 };
 
 struct MASplayer_MHI_Handle {
@@ -110,11 +110,11 @@ struct freetimer {
  * Also used to switch between relying on globals or not.
  */
 #if defined(BASE_GLOBAL)
-  extern struct MHI_LibBase       * MAS_MHI_Base;
+  extern struct MASplayer_MHI     * MASplayer_MHI_Base;
   extern struct DosLibrary        * DOSBase;
   extern struct ExecBase          * SysBase;
 #elif defined(BASE_REDEFINE)
-  #define AmiGUS_MHI_Base           (base)
+  #define MASplayer_MHI_Base        (base)
   #define DOSBase                   base->mhi_DOSBase
   #define SysBase                   base->mhi_SysBase
 #endif

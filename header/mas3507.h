@@ -26,23 +26,23 @@
 #include "SDI_compiler.h"
 
 ASM( VOID ) SAVEDS SetupParPort(
-  REG( a6, struct MHI_LibBase * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS SetVolume(
   REG( d0, ULONG l ),
   REG( d1, ULONG r ),
-  REG( a6, struct MHI_LibBase * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS SetPrefactor(
   REG( d0, UWORD prefac ),
-  REG( a6, struct MHI_LibBase * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS SetBass(
   REG( d0, UWORD bass ),
-  REG( a6, struct MHI_LibBase * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS SetTreble(
   REG( d0, UWORD treb ),
-  REG( a6, struct MHI_LibBase * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 #endif /* MAS3507_H */

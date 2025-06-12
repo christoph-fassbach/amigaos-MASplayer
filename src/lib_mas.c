@@ -25,9 +25,9 @@
 #ifdef BASE_GLOBAL
 
 // As declared in mas_mhi.h
-struct MHI_LibBase       * MAS_MHI_Base      = 0;
-struct ExecBase          * SysBase           = 0;
-struct DosLibrary        * DOSBase           = 0;
+struct MASplayer_MHI   * MASplayer_MHI_Base = 0;
+struct ExecBase        * SysBase            = 0;
+struct DosLibrary      * DOSBase            = 0;
 
 #endif
 
@@ -51,8 +51,8 @@ LONG CustomLibInit( LIBRARY_TYPE * base, struct ExecBase * sysBase ) {
   }
 
 #ifdef BASE_GLOBAL
-  DOSBase         = base->mhi_DOSBase;
-  MAS_MHI_Base    = base;
+  DOSBase               = base->mhi_DOSBase;
+  MASplayer_MHI_Base    = base;
 #endif
 
   return 0; //ENoError;

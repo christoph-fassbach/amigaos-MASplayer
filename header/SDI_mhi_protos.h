@@ -27,13 +27,13 @@
 #include "SDI_compiler.h"
 
 /* Forward declaration here. */
-struct AmiGUS_MHI;
+struct MASplayer_MHI;
 struct MASplayer_MHI_Handle;
 
 /******************************************************************************
  * MHI library interface functions rewritten into SDI_compiler macros,
  * thereby making them compiler agnostic and 
- * adapting them for AmiGUS library internal usage.
+ * adapting them for MASplayer library internal usage.
  *
  * Detailed explanation see
  * https://aminet.net/driver/audio/mhi_dev.lha ->
@@ -43,46 +43,46 @@ struct MASplayer_MHI_Handle;
 ASM( APTR ) SAVEDS MHIAllocDecoder(
   REG( a0, struct Task * task ),
   REG( d0, ULONG signal ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS MHIFreeDecoder(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( BOOL ) SAVEDS MHIQueueBuffer(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a0, APTR buffer ),
   REG( d0, ULONG size),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( APTR ) SAVEDS MHIGetEmpty(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( UBYTE ) SAVEDS MHIGetStatus(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS MHIPlay(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS MHIStop(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS MHIPause(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( ULONG ) SAVEDS MHIQuery(
   REG( d1, ULONG query ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 ASM( VOID ) SAVEDS MHISetParam(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( d0, UWORD param ),
   REG( d1, ULONG value ),
-  REG( a6, struct AmiGUS_MHI * base ));
+  REG( a6, struct MASplayer_MHI * base ));
 
 #endif /* SDI_MHI_PROTOS_H */

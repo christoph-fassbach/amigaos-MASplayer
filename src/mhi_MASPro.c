@@ -148,7 +148,7 @@ struct LibBase *GFXBase;
 ASM( APTR ) SAVEDS MHIAllocDecoder(
   REG( a0, struct Task * task ),
   REG( d0, ULONG signal ),
-  REG( a6, struct MHI_LibBase * base ))
+  REG( a6, struct MASplayer_MHI * base ))
 /* Allocate MHI. Open all needed resources etc, and be prepared
 	to output.
 
@@ -223,8 +223,8 @@ ASM( APTR ) SAVEDS MHIAllocDecoder(
 }
 
 ASM( VOID ) SAVEDS MHIFreeDecoder(
-  REG( a3, struct MHI_LibBase_Handlmas_std_interrupte * handle ),
-  REG( a6, struct MHI_LibBase * base ))
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
+  REG( a6, struct MASplayer_MHI * base ))
 /* Free MHI and all resources
 */
 {
@@ -253,7 +253,7 @@ ASM( BOOL ) SAVEDS MHIQueueBuffer(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a0, APTR buffer ),
   REG( d0, ULONG size),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Add this buffer to the queue
 	*/
 	struct MPBufferNode *newnode;
@@ -278,7 +278,7 @@ ASM( BOOL ) SAVEDS MHIQueueBuffer(
 
 ASM( APTR ) SAVEDS MHIGetEmpty(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Find the next empty buffer node and return the buffers address
 	*/
 	struct MPBufferNode *mynode;
@@ -305,7 +305,7 @@ ASM( APTR ) SAVEDS MHIGetEmpty(
 
 ASM( UBYTE ) SAVEDS MHIGetStatus(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Get the MHI players status flags
 	*/
 	return handle->status;
@@ -313,7 +313,7 @@ ASM( UBYTE ) SAVEDS MHIGetStatus(
 
 ASM( VOID ) SAVEDS MHIPlay(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Set the player to play mode
 	*/
 	handle->status = MHIF_PLAYING;
@@ -321,7 +321,7 @@ ASM( VOID ) SAVEDS MHIPlay(
 
 ASM( VOID ) SAVEDS MHIStop(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Stop the player and free all buffers
 	*/
 	APTR killednode;
@@ -335,7 +335,7 @@ ASM( VOID ) SAVEDS MHIStop(
 
 ASM( VOID ) SAVEDS MHIPause(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Pause the player
 	*/
 	if(handle->status == MHIF_PAUSED)			/* Unpause */
@@ -347,7 +347,7 @@ ASM( VOID ) SAVEDS MHIPause(
 
 ASM( ULONG ) SAVEDS MHIQuery(
   REG( d1, ULONG query ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Respond to a feature query from an application
 	*/
 	LOG_D(("MHIQuery(%ld)\n", query));
@@ -416,7 +416,7 @@ ASM( ULONG ) SAVEDS MHIQuery(
 	}
 }
 
-static void setVolPan(struct MASplayer_MHI_Handle *handle, struct MHI_LibBase * base) {
+static void setVolPan(struct MASplayer_MHI_Handle *handle, struct MASplayer_MHI * base) {
 	LONG VolL, VolR;
 	ULONG MasL, MasR;
 	
@@ -455,7 +455,7 @@ ASM( VOID ) SAVEDS MHISetParam(
   REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( d0, UWORD param ),
   REG( d1, ULONG value ),
-  REG( a6, struct MHI_LibBase * base )) {
+  REG( a6, struct MASplayer_MHI * base )) {
 	/* Set decoder parameter.
 	*/
 	WORD calc;
