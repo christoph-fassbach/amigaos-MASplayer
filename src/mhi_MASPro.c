@@ -156,13 +156,13 @@ ASM( APTR ) SAVEDS MHIAllocDecoder(
 	signal is the signal mask to use
 */
 {
-	struct MPHandle *handle;
+	struct MASplayer_MHI_Handle *handle;
 	LOG_D(("MHIAllocDecoder...\n"));
 	if( !( GFXBase = (struct LibBase *) OpenLibrary("graphics.library", 0)) )
 		return 0L;		/* ech! */
 	LOG_D(("MHIAllocDecoder: gfx opened at 0x%08lx.\n", GFXBase));
 	if(!mhiallocated) {
-		if( handle = AllocMem(sizeof(struct MPHandle), MEMF_CLEAR) )
+		if( handle = AllocMem(sizeof(struct MASplayer_MHI_Handle), MEMF_CLEAR) )
 		{
 			handle->task = task;
 			handle->mhisignal = signal;
@@ -234,7 +234,7 @@ ASM( VOID ) SAVEDS MHIFreeDecoder(
 	{
 		RemICRVector(ft.ciabase,ft.timerbit,&ft.timerint);
 		
-		FreeMem(handle, sizeof(struct MPHandle));
+		FreeMem(handle, sizeof(struct MASplayer_MHI_Handle));
 		
 		FreeMiscResource(MR_PARALLELPORT);
 		FreeMiscResource(MR_PARALLELBITS);
@@ -250,7 +250,7 @@ ASM( VOID ) SAVEDS MHIFreeDecoder(
 }
 
 ASM( BOOL ) SAVEDS MHIQueueBuffer(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a0, APTR buffer ),
   REG( d0, ULONG size),
   REG( a6, struct MHI_LibBase * base )) {
@@ -277,7 +277,7 @@ ASM( BOOL ) SAVEDS MHIQueueBuffer(
 }
 
 ASM( APTR ) SAVEDS MHIGetEmpty(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a6, struct MHI_LibBase * base )) {
 	/* Find the next empty buffer node and return the buffers address
 	*/
@@ -304,7 +304,7 @@ ASM( APTR ) SAVEDS MHIGetEmpty(
 }
 
 ASM( UBYTE ) SAVEDS MHIGetStatus(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a6, struct MHI_LibBase * base )) {
 	/* Get the MHI players status flags
 	*/
@@ -312,7 +312,7 @@ ASM( UBYTE ) SAVEDS MHIGetStatus(
 }
 
 ASM( VOID ) SAVEDS MHIPlay(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a6, struct MHI_LibBase * base )) {
 	/* Set the player to play mode
 	*/
@@ -320,7 +320,7 @@ ASM( VOID ) SAVEDS MHIPlay(
 }
 
 ASM( VOID ) SAVEDS MHIStop(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a6, struct MHI_LibBase * base )) {
 	/* Stop the player and free all buffers
 	*/
@@ -334,7 +334,7 @@ ASM( VOID ) SAVEDS MHIStop(
 }
 
 ASM( VOID ) SAVEDS MHIPause(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( a6, struct MHI_LibBase * base )) {
 	/* Pause the player
 	*/
@@ -416,7 +416,7 @@ ASM( ULONG ) SAVEDS MHIQuery(
 	}
 }
 
-static void setVolPan(struct MPHandle *handle, struct MHI_LibBase * base) {
+static void setVolPan(struct MASplayer_MHI_Handle *handle, struct MHI_LibBase * base) {
 	LONG VolL, VolR;
 	ULONG MasL, MasR;
 	
@@ -452,7 +452,7 @@ static void setVolPan(struct MPHandle *handle, struct MHI_LibBase * base) {
 }
 
 ASM( VOID ) SAVEDS MHISetParam(
-  REG( a3, struct MPHandle * handle ),
+  REG( a3, struct MASplayer_MHI_Handle * handle ),
   REG( d0, UWORD param ),
   REG( d1, ULONG value ),
   REG( a6, struct MHI_LibBase * base )) {

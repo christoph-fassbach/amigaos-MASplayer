@@ -62,7 +62,7 @@ struct MHI_LibBase {
   struct DosLibrary *mhi_DOSBase;
 };
 
-struct MPHandle {
+struct MASplayer_MHI_Handle {
 
   APTR data;            /* current buffer node         */
   APTR endnode;         /* node at the end of the list */
