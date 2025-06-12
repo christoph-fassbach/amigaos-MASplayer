@@ -57,9 +57,9 @@
 
 struct MASplayer_MHI {
 
-  struct BaseLibrary  mhi_Library;
-  struct ExecBase   * mhi_SysBase;
-  struct DosLibrary * mhi_DOSBase;
+  struct BaseLibrary  mpb_Library;
+  struct ExecBase   * mpb_SysBase;
+  struct DosLibrary * mpb_DOSBase;
 };
 
 struct MASplayer_MHI_Handle {
@@ -115,8 +115,8 @@ struct freetimer {
   extern struct ExecBase          * SysBase;
 #elif defined(BASE_REDEFINE)
   #define MASplayer_MHI_Base        (base)
-  #define DOSBase                   base->mhi_DOSBase
-  #define SysBase                   base->mhi_SysBase
+  #define DOSBase                   base->mpb_DOSBase
+  #define SysBase                   base->mpb_SysBase
 #endif
 
 #endif /* MAS_MHI_H */

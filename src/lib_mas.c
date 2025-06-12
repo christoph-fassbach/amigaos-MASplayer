@@ -37,21 +37,21 @@ struct DosLibrary      * DOSBase            = 0;
 
 LONG CustomLibInit( LIBRARY_TYPE * base, struct ExecBase * sysBase ) {
 
-  base->mhi_SysBase = sysBase;
+  base->mpb_SysBase = sysBase;
 
 #ifdef BASE_GLOBAL
   SysBase = sysBase;
 #endif
 
-  base->mhi_DOSBase =
+  base->mpb_DOSBase =
     ( struct DosLibrary * ) OpenLibrary( "dos.library", 34 );
-  if ( !( base->mhi_DOSBase )) {
+  if ( !( base->mpb_DOSBase )) {
 
     return 17; //EOpenDosBase;
   }
 
 #ifdef BASE_GLOBAL
-  DOSBase               = base->mhi_DOSBase;
+  DOSBase               = base->mpb_DOSBase;
   MASplayer_MHI_Base    = base;
 #endif
 
@@ -64,8 +64,8 @@ VOID CustomLibClose( LIBRARY_TYPE * base ) {
   struct ExecBase *SysBase = base->agb_SysBase;
 #endif
 
-  if ( base->mhi_DOSBase ) {
+  if ( base->mpb_DOSBase ) {
 
-    CloseLibrary(( struct Library *) base->mhi_DOSBase );
+    CloseLibrary(( struct Library *) base->mpb_DOSBase );
   }
 }
