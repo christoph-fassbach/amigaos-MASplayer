@@ -5,6 +5,7 @@
 **/build/*
 **/target/*
 *.o
+**/*.o
 *.ko
 *.obj
 *.elf
@@ -60,12 +61,3 @@ dkms.conf
 
 # UAE extras
 *.uaem
-
-# Some AHI4 specifics
-**/include/*
-**/tools/*
-Play16**
-Mixer**
-*.wav
-PlayWAV**
-ftp-*.sh
