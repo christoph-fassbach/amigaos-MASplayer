@@ -6,6 +6,7 @@
 **/target/*
 *.o
 **/*.o
+support/MHIplay/MHIplay.o
 *.ko
 *.obj
 *.elf
