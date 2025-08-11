@@ -213,14 +213,8 @@ clean: clean-intermediate
 	-$(RM) $(DDIR) adf $(RM_SUFFIX)
 	-$(RM) support/$(WILDCARD).o
 
-dist-clean: clean
-	make -f Makefile-Includes clean
-
 dist: all
 	$(LHA) a target/MHIbin.lha target/$(WILDCARD)
-
-INCLUDES:
-	make -f Makefile-Includes all 
 
 FOLDERS:
 	-@$(MKDIR) $(DDIR) $(MKDIR_SUFFIX)
@@ -239,97 +233,7 @@ $(BDIR)%.o: $(SDIR)%.asm $(HDIR)*
 
 ###############################################################################
 
-test: test_cancel \
-      test_dialog \
-      test_equalizer \
-      test_file \
-      test_math \
-      test_playback \
-      test_sleep
-
-test_cancel: FOLDERS $(LIB_OBJS)
-	@echo " "
-	$(CC) $(CFLAGS) test/$@.o test/$@.c
-	$(LD) $(LFLAGS) test/$@ $(LFLAGS1) $(LFLAGST1) test/$@.o \
-            $(BDIR)amigus_vs1063-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)debug-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)support-$(LIB_CPU)-$(LIB_LOG).o \
-            $(LFLAGST2)
-	@echo " "
-	$(RUNNER) test/$@
-	-@$(RM) test/$@ test/$@.o $(RM_SUFFIX)
-
-test_dialog: FOLDERS
-	@echo " "
-	vc +kick13 test/$@.c -o test/$@
-
-test_equalizer: FOLDERS $(LIB_OBJS)
-	@echo " "
-	$(CC) $(CFLAGS) test/$@.o test/$@.c
-	$(LD) $(LFLAGS) test/$@ $(LFLAGS1) $(LFLAGST1) test/$@.o \
-            $(BDIR)amigus_vs1063-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)debug-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)support-$(LIB_CPU)-$(LIB_LOG).o \
-            $(LFLAGST2)
-	@echo " "
-	$(RUNNER) test/$@
-	-@$(RM) test/$@ test/$@.o $(RM_SUFFIX)
-
-test_file: FOLDERS
-	@echo " "
-	vc +kick13 test/$@.c -o test/$@
-
-test_list: FOLDERS $(LIB_OBJS)
-	@echo " "
-	$(CC) $(CFLAGS) test/$@.o test/$@.c
-	$(LD) $(LFLAGS) test/$@ $(LFLAGS1) $(LFLAGST1) test/$@.o \
-            $(BDIR)debug-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)support-$(LIB_CPU)-$(LIB_LOG).o \
-            $(LFLAGST2)
-	@echo " "
-	$(RUNNER) test/$@
-	-@$(RM) test/$@ test/$@.o $(RM_SUFFIX)
-
-test_math: FOLDERS $(LIB_OBJS)
-	@echo " "
-	$(CC) $(CFLAGS) test/$@.o test/$@.c
-	$(LD) $(LFLAGS) test/$@ $(LFLAGS1) test/$@.o \
-            $(BDIR)math.o
-	@echo " "
-	$(RUNNER) test/$@
-	-@$(RM) test/$@ test/$@.o $(RM_SUFFIX)
-
-test_playback: FOLDERS $(LIB_OBJS)
-	@echo " "
-	$(CC) $(CFLAGS) test/$@.o test/$@.c
-	$(LD) $(LFLAGS) test/$@ $(LFLAGS1) $(LFLAGST1) test/$@.o \
-            $(BDIR)interrupt-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)debug-$(LIB_CPU)-$(LIB_LOG).o \
-            $(BDIR)support-$(LIB_CPU)-$(LIB_LOG).o \
-            $(LFLAGST2)
-	@echo " "
-	$(RUNNER) test/$@
-	-@$(RM) test/$@ test/$@.o $(RM_SUFFIX)
-
-test_sleep: FOLDERS
-	@echo " "
-	vc +kick13 test/$@.c -o test/$@
-
-###############################################################################
-
-support: FOLDERS mhi_lib_check get_mem_log MHIplay
-
-get_mem_log:
-	$(CC) $(CFLAGS) support/$@.o support/$@.c
-	$(LD) $(LFLAGS) target/$@ $(LFLAGS1) $(LFLAGST1) support/$@.o $(LFLAGST2)
-	-cp target/$@ ~/Documents/FS-UAE/Shared/MHI/
-	-curl --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/AmiGUS/GetMhiMemLog
-
-mhi_lib_check:
-	$(CC) $(CFLAGS) support/$@.o support/$@.c
-	$(LD) $(LFLAGS) target/$@ $(LFLAGS1) $(LFLAGST1) support/$@.o $(LFLAGST2)
-	-cp target/$@ ~/Documents/FS-UAE/Shared/MHI/
-	-curl --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/AmiGUS/
+support: FOLDERS MHIplay
 
 MHIplay:
 	$(CC) $(CFLAGS) support/$@.o support/$@.c
@@ -338,15 +242,3 @@ MHIplay:
 	-curl --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/AmiGUS/
 
 ###############################################################################
-
-ADF: all support
-	mkdir -p adf
-	adf_floppy_create target/MASplayer.adf dd
-	adf_format -l MASplayer -t 0 -f target/MASplayer.adf
-	fuseadf target/MASplayer.adf adf/
-	cp target/mhimas*.library adf/
-	cp target/mhi_lib_check adf/
-	cp target/get_mem_log adf/
-	cp target/MHIplay adf/
-	umount adf/
-	-cp target/MASplayer.adf /media/chritoph/HXC/

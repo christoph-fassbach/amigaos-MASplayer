@@ -4,10 +4,10 @@ pure_ami_paths=True
 hw_access=emu
 cpu=68020
 ram_size=10240
-#8192
+# 8192
 stack=256
 quiet=True
-#verbose=True
+# verbose=True
 
 [volumes]
 sys=~/Documents/dev/amigaos-vamos-env
