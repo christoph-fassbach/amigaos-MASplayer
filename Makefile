@@ -192,7 +192,7 @@ endif
 
 ##################################
 
-.PHONY: all install test support INCLUDES FOLDERS clean dist-clean dist
+.PHONY: all install test support INCLUDES FOLDERS clean release
 
 all: FOLDERS $(LIB_FILE_DEST)
 
@@ -212,9 +212,7 @@ clean-intermediate:
 clean: clean-intermediate
 	-$(RM) $(DDIR) adf $(RM_SUFFIX)
 	-$(RM) support/$(WILDCARD).o
-
-dist: all
-	$(LHA) a target/MHIbin.lha target/$(WILDCARD)
+	-$(RM) support/$(WILDCARD)/$(WILDCARD).o
 
 FOLDERS:
 	-@$(MKDIR) $(DDIR) $(MKDIR_SUFFIX)
@@ -236,9 +234,24 @@ $(BDIR)%.o: $(SDIR)%.asm $(HDIR)*
 support: FOLDERS MHIplay
 
 MHIplay:
-	$(CC) $(CFLAGS) support/$@.o support/$@.c
-	$(LD) $(LFLAGS) target/$@ $(LFLAGS1) $(LFLAGST1) support/$@.o $(LFLAGST2)
+	$(CC) $(CFLAGS) support/$@/$@.o support/$@/$@.c
+	$(LD) $(LFLAGS) target/$@ $(LFLAGS1) $(LFLAGST1) support/$@/$@.o $(LFLAGST2)
 	-cp target/$@ ~/Documents/FS-UAE/Shared/MHI/
-	-curl --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/AmiGUS/
+	-curl --connect-timeout 3 --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/AmiGUS/
 
 ###############################################################################
+
+release:
+	make MAS_VERSION=pro LIB_CPU=000 LIB_LOG=NO_LOG
+	make MAS_VERSION=pro LIB_CPU=020 LIB_LOG=NO_LOG
+	make MAS_VERSION=pro LIB_CPU=040 LIB_LOG=NO_LOG
+	make MAS_VERSION=pro LIB_CPU=000 LIB_LOG=SER_LOG
+	make MAS_VERSION=pro LIB_CPU=020 LIB_LOG=SER_LOG
+	make MAS_VERSION=pro LIB_CPU=040 LIB_LOG=SER_LOG
+	make MAS_VERSION=std LIB_CPU=000 LIB_LOG=NO_LOG
+	make MAS_VERSION=std LIB_CPU=020 LIB_LOG=NO_LOG
+	make MAS_VERSION=std LIB_CPU=040 LIB_LOG=NO_LOG
+	make MAS_VERSION=std LIB_CPU=000 LIB_LOG=SER_LOG
+	make MAS_VERSION=std LIB_CPU=020 LIB_LOG=SER_LOG
+	make MAS_VERSION=std LIB_CPU=040 LIB_LOG=SER_LOG
+	make support
