@@ -64,6 +64,8 @@ DDIR   = target/
 BDIR   = build/
 SDIR   = src/
 HDIR   = header/
+ADFDIR = $(DDIR)adf/
+ADFIMG = $(DDIR)/MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.adf
 
 MAS_VERSION    ?= pro
 LIB_CPU        ?= 000
@@ -210,13 +212,14 @@ clean-intermediate:
 	-$(RM) $(BDIR) $(RM_SUFFIX)
 
 clean: clean-intermediate
-	-$(RM) $(DDIR) adf $(RM_SUFFIX)
+	-$(RM) $(DDIR) $(ADFDIR) $(RM_SUFFIX)
 	-$(RM) support/$(WILDCARD).o
 	-$(RM) support/$(WILDCARD)/$(WILDCARD).o
 
 FOLDERS:
 	-@$(MKDIR) $(DDIR) $(MKDIR_SUFFIX)
 	-@$(MKDIR) $(BDIR) $(MKDIR_SUFFIX)
+	-@$(MKDIR) $(ADFDIR) $(MKDIR_SUFFIX)
 
 $(LIB_FILE_DEST): $(LIB_OBJS)
 	$(LD) $(LFLAGS) $@ $(LFLAGS1) $^
@@ -231,17 +234,75 @@ $(BDIR)%.o: $(SDIR)%.asm $(HDIR)*
 
 ###############################################################################
 
-support: FOLDERS MHIplay
+support: FOLDERS MHIplay Test
 
 MHIplay:
 	$(CC) $(CFLAGS) support/$@/$@.o support/$@/$@.c
 	$(LD) $(LFLAGS) target/$@ $(LFLAGS1) $(LFLAGST1) support/$@/$@.o $(LFLAGST2)
 	-cp target/$@ ~/Documents/FS-UAE/Shared/MHI/
-	-curl --connect-timeout 3 --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/AmiGUS/
+	-curl --connect-timeout 3 --netrc --upload-file target/$@       ftp://192.168.0.4/cf0/Expansion/MASplayer/
+
+Test:
+	$(CC) $(CFLAGS) support/$@/$@.o support/$@/$@.c
+	$(LD) $(LFLAGS) target/$@ $(LFLAGS1) $(LFLAGST1) support/$@/$@.o $(LFLAGST2)
+	-cp target/$@ ~/Documents/FS-UAE/Shared/MHI/
 
 ###############################################################################
 
-release:
+release: all-variants package
+
+package: all-variants
+	-umount $(ADFDIR)
+	rm -rf $(ADFIMG)
+
+	adf_floppy_create $(ADFIMG) dd
+	adf_format -l MASplayerMHI -t 0 -f $(ADFIMG)
+	fuseadf $(ADFIMG) $(ADFDIR)
+
+	mkdir -p $(ADFDIR)/MHI \
+	         $(ADFDIR)/Tools       \
+	         $(ADFDIR)/Manual
+
+	cp Installer/MHI.info                       $(ADFDIR)/
+	cp $(DDIR)/*\.library*                      $(ADFDIR)/MHI/
+
+	cp Installer/Tools.info                     $(ADFDIR)/
+	cp $(DDIR)/MHIplay                          $(ADFDIR)/Tools/
+	cp Installer/program.info                   $(ADFDIR)/Tools/MHIplay.info
+	cp $(DDIR)/Test                             $(ADFDIR)/Tools/
+	cp Installer/program.info                   $(ADFDIR)/Tools/Test.info
+
+	cp Installer/Manual.info                    $(ADFDIR)/
+	cp Installer/MASplayer.guide                $(ADFDIR)/Manual/
+	cp Installer/MASplayer.guide.info           $(ADFDIR)/Manual/
+	cp Docs/Manual/MASplayer.guide              $(ADFDIR)/Manual/MASplayerv39.guide
+	sed -e "s#MultiView#Sys:Utilities/WDisplay#"    \
+	    -e "s#ilbm/#MASplayer-Manual:ilbm/#"        \
+	    Docs/Manual/MASplayer.guide           > $(ADFDIR)/Manual/MASplayerv38.guide
+	cp -R Docs/Manual/ilbm                      $(ADFDIR)/Manual
+	cp Installer/MASplayer.guide.infoV38        $(ADFDIR)/Manual/
+
+	cp Installer/Disk.info                      $(ADFDIR)/
+	cp Installer/GPL.txt.info                   $(ADFDIR)/GPL.txt.info
+	cp COPYING                                  $(ADFDIR)/GPL.txt
+	cp Installer/LGPL.txt.info                  $(ADFDIR)/LGPL.txt.info
+	cp COPYING.LESSER                           $(ADFDIR)/LGPL.txt
+	cp mhimasplayer.readme                      $(ADFDIR)/ReadMeFirst.txt
+	cp Installer/ReadMeFirst.txt.info           $(ADFDIR)/ReadMeFirst.txt.info
+
+	cp "Installer/MASplayer MHI installer"      $(ADFDIR)/
+	cp "Installer/2.0+ - English.info"          $(ADFDIR)/
+	cp "Installer/2.0+ - Deutsch.info"          $(ADFDIR)/
+
+	cp "Installer/1.3 - English"                $(ADFDIR)/
+	cp "Installer/1.3 - English.info"           $(ADFDIR)/
+	cp "Installer/1.3 - Deutsch"                $(ADFDIR)/
+	cp "Installer/1.3 - Deutsch.info"           $(ADFDIR)/
+
+	umount $(ADFDIR)/
+	-cp $(ADFIMG) ~/Documents/FS-UAE/Shared/MHI/
+
+all-variants:
 	make MAS_VERSION=pro LIB_CPU=000 LIB_LOG=NO_LOG
 	make MAS_VERSION=pro LIB_CPU=020 LIB_LOG=NO_LOG
 	make MAS_VERSION=pro LIB_CPU=040 LIB_LOG=NO_LOG
@@ -255,3 +316,4 @@ release:
 	make MAS_VERSION=std LIB_CPU=020 LIB_LOG=SER_LOG
 	make MAS_VERSION=std LIB_CPU=040 LIB_LOG=SER_LOG
 	make support
+

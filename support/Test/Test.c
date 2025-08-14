@@ -38,13 +38,20 @@
  */
 
 #include <stdio.h>
+
+#include <dos/dos.h>
+
 #include <exec/libraries.h>
 #include <exec/memory.h>
-#include <pragma/exec_lib.h>
-#include <pragma/dos_lib.h>
-#include <dos/dos.h>
+
+#include <proto/exec.h>
+#include <proto/dos.h>
 #include <proto/mhi.h>
+
 #include <libraries/mhi.h>
+
+extern struct ExecBase *SysBase;
+extern struct DOSLibrary *DOSBase;
 
 #define NUMBUFS	7
 #define BUFSIZE	10000
