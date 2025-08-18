@@ -25,7 +25,7 @@ Table Of Contents
 @{" 2.2.2 OS 2.0+ Software Installation " LINK sw_inst20}
 
 @{" 3     MHI Driver Framework          " LINK mhi}
-@{" 3.1   Example: MHI in AmigaAmp      " LINK mhi_amigaamp}
+@{" 3.1   Example: MHI in AmigaAMP      " LINK mhi_amigaamp}
 @{" 3.2   Example: MHI in HippoPlayer   " LINK mhi_hippoplayer}
 
 @{" 4     Driver troubleshooting        " LINK drivers}
@@ -168,6 +168,7 @@ Please do not use the OS 1.3 installers to install your MASplayer on
 newer AmigaOS versions. They work well on OS 1.3, and while we try our
 best to make the MASplayer enjoyable on all compatible configurations,
 we cannot wield any magic.
+
 @{" 2.2.1 OS 1.3 Software Installation  " LINK sw_inst13}
 @ENDNODE
 
@@ -280,33 +281,33 @@ On AmigaOS 1.3, there are problems loading libraries from other
 locations than Libs:, hence it will be installed to 
 Libs:mhimaspro.library to ensure hassle-free usage.
 
-@{" 3.1   Example: MHI in AmigaAmp      " LINK mhi_amigaamp}
+@{" 3.1   Example: MHI in AmigaAMP      " LINK mhi_amigaamp}
 @ENDNODE
 
-@NODE mhi_amigaamp "MHI Driver Framework - AmigaAmp"
+@NODE mhi_amigaamp "MHI Driver Framework - AmigaAMP"
 @TOC contents
-@{" 3.1   Example: MHI in AmigaAmp      " LINK mhi_amigaamp}
+@{" 3.1   Example: MHI in AmigaAMP      " LINK mhi_amigaamp}
 
 As Thomas Wenzel not only created @{"AmigaAMP (5)" LINK refs} but has 
 also been co-authoring MHI, integration of both works almost perfectly,
 including equalizer functionality.
 @{JCENTER}
-@{"AmigaAmp Main" system "MultiView ilbm/amp0.iff"}@{IMG ilbm/amp0.iff}
+@{"AmigaAMP Main" system "MultiView ilbm/amp0.iff"}@{IMG ilbm/amp0.iff}
 @{JLEFT}
 After starting AmigaAMP, open the preferences via the Project menu entry.
 @{JCENTER}
-@{"AmigaAmp Menu" system "MultiView ilbm/amp1.iff"}@{IMG ilbm/amp1.iff}
+@{"AmigaAMP Menu" system "MultiView ilbm/amp1.iff"}@{IMG ilbm/amp1.iff}
 @{JLEFT}
 In the preferences, navigate to the Decoder tab, tick the "MHI Support"
 checkbox and click the file symbol next to "MHI Driver:".
 @{JCENTER}
-@{"AmigaAmp Prefs" system "MultiView ilbm/amp2.iff"}@{IMG ilbm/amp2.iff}
+@{"AmigaAMP Prefs" system "MultiView ilbm/amp2.iff"}@{IMG ilbm/amp2.iff}
 @{JLEFT}
 Navigate to Libs:mhi and select the mhimaspro.library. Library names are
 case-sensitive when loading and the more readable name had to be
 sacrificed to support AmigaOS 1.3.
 @{JCENTER}
-@{"AmigaAmp MHI File Requester" system "MultiView ilbm/amp3.iff"}@{IMG ilbm/amp3.iff}
+@{"AmigaAMP MHI File Requester" system "MultiView ilbm/amp3.iff"}@{IMG ilbm/amp3.iff}
 @{JLEFT}
 Confirm with the "OK" button, close and confirm the preferences dialog
 with the "Save" button. You may need to restart AmigaAMP immediately.
