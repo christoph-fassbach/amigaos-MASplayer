@@ -251,7 +251,7 @@ Test:
 
 release: all-variants package
 
-package: all-variants
+package:
 	-umount $(ADFDIR)
 	rm -rf $(ADFIMG)
 
@@ -280,7 +280,6 @@ package: all-variants
 	    -e "s#ilbm/#MASplayer-Manual:ilbm/#"        \
 	    Docs/Manual/MASplayer.guide           > $(ADFDIR)/Manual/MASplayerv38.guide
 	cp -R Docs/Manual/ilbm                      $(ADFDIR)/Manual
-	cp Installer/MASplayer.guide.infoV38        $(ADFDIR)/Manual/
 
 	cp Installer/Disk.info                      $(ADFDIR)/
 	cp Installer/GPL.txt.info                   $(ADFDIR)/GPL.txt.info

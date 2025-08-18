@@ -1,0 +1,163 @@
+@DATABASE "MASplayer manual"
+
+@NODE main "MASplayer User Manual"
+@TOC main
+@{JCENTER}
+MASplayer User Manual
+
+Table Of Contents
+
+@{"       Title                         " LINK main}
+
+@{" 1     Overview                      " LINK intro}
+@{" 1.1   Introduction                  " LINK intro}
+@{" 1.2   MASplayer Std and Pro 1 + 2   " LINK intro}
+@{" 1.3   MASplayer Pro2+               " LINK MASplayer_pro2}
+@{" 1.4   MASplayer Pro2+ Bluetooth     " LINK MASplayer_pro2_bt}
+@{" 1.5   System Requirements           " LINK system}
+@{" 1.5.1 Minimum Configuration         " LINK system}
+@{" 1.5.2 Recommended Configuration     " LINK system}
+
+@{" 2     Installation                  " LINK hw_inst}
+@{" 2.1   MASplayer Installation        " LINK hw_inst}
+@{" 2.2   Software Installation         " LINK sw_inst}
+@{" 2.2.1 OS 1.3 Software Installation  " LINK sw_inst13}
+@{" 2.2.2 OS 2.0+ Software Installation " LINK sw_inst20}
+
+@{" 3     MHI Driver Framework          " LINK mhi}
+@{" 3.1   Example: MHI in AmigaAmp      " LINK mhi_amigaamp}
+@{" 3.2   Example: MHI in HippoPlayer   " LINK mhi_hippoplayer}
+
+@{" 4     Driver troubleshooting        " LINK drivers}
+
+@{" 5     Appendices                    " LINK credits}
+@{" 5.1   Credits                       " LINK credits}
+@{" 5.2   References                    " LINK refs}
+
+@ENDNODE
+
+@NODE intro "Overview - Introduction"
+@TOC main
+@{" 1     Overview                      " LINK intro}
+@{" 1.1   Introduction                  " LINK intro}
+
+Thank you very much for your interest in the MASplayer.
+It is a MP3 Player hardware for the parallelport of the Amiga Computer.
+It plays any kind of MP3 files and MP3 radio streams without stressing
+the CPU.
+
+The MAS player is a small module that takes over the task of decoding music
+compressed in MPEG and providing the resulting data as an analog signal.
+The decompression is done by a chip from Micronas Intermetall. This chip
+named 'MAS 3507D' is designed to decode different standards. 
+The most commonly used standard is MPEG 1, Layer 3, which is called 'MP3'
+for short. The sound chip CS4331KS and its successor CS4334 from 
+Crystal Cirrus Logic then generate the necessary analog signal, which can
+be fed to an amplifier or a stereo system.
+
+All variants connect to the standard parallel port of the Amiga and provide
+direct analog output of the decoded audio stream. 
+
+@{" 1.2   MASplayer Std and Pro 1 + 2   " LINK intro}
+
+The original design dates back to 1999 and was developed by Dirk Conrad.
+The original, "Standard" or Std version of the player got later upgraded to
+use twice the clock and reduce the number of accesses to the parallel port
+by half thereby. See @{"MASplayer (1)" LINK refs} for further details.
+
+You may even be able to upgrade to the Pro version by modifying a few 
+traces. Due to the lack of Std hardware, the MHI driver for the Std version
+is largely untested and provided for completeness reasons only.
+
+@{" 1.3   MASplayer Pro2+               " LINK MASplayer_pro2}
+@ENDNODE
+
+@NODE MASplayer_pro2 "MASplayer Pro2"
+@TOC main
+@{" 1.3   MASplayer Pro2+               " LINK MASplayer_pro2}
+
+Deviating from the original design, it has an micro-USB port
+for +5V power supply and supports mixing Paula audio from the RCAs
+and MP3-sound internally. For using this feature, a short cable from
+the two RCA to a 3.5mm stereo phone connector is required.
+When mixing audio via MASplayer Pro2+, the hard separation of the
+Amiga's stereo channels is slightly lifted by mixing them with each
+other for a more comfortable "soft stereo mode".
+
+@{" 1.4   MASplayer Pro2+ Bluetooth     " LINK MASplayer_pro2_bt}
+@ENDNODE
+
+@NODE MASplayer_pro2_bt "MASplayer Pro2+ Bluetooth"
+@TOC main
+@{" 1.4   MASplayer Pro2+ Bluetooth     " LINK MASplayer_pro2_bt}
+
+Based on the MASplayer Pro2+, +5V power supply is now expected via
+an USB-C port. Additionnaly, a Bluetooth 5.3 audio connection (LDAC/APTX)
+to any headphones, boomboxes, or alike was added.
+
+@{"MASplayer Pro2+ Bluetooth top" system "MultiView ilbm/2+bt-top0.iff"}@{IMG ilbm/2+bt-top0.iff}
+@{"MASplayer Pro2+ Bluetooth bottom" system "MultiView ilbm/2+bt-bottom0.iff"}@{IMG ilbm/2+bt-bottom0.iff}
+
+@{" 1.5   System Requirements           " LINK system}
+@ENDNODE
+
+@NODE system "System Requirements"
+@TOC main
+@{" 1.5   System Requirements           " LINK system}
+@{" 1.5.1 Minimum Configuration         " LINK system}
+@{" 1.5.2 Recommended Configuration     " LINK system}
+
+
+
+@ENDNODE
+
+@NODE credits "Appendices - Credits"
+@TOC main
+@{" 7     Appendices                    " LINK credits}
+@{" 7.1   Credits                       " LINK credits}
+
+Original concept & hardware design
+----------------------------------
+Dirk Conrad
+
+MASplayer Pro 2+ hardware design
+--------------------------------
+Marcel J‰hne
+
+MHI drivers
+-----------
+Paul Qureshi
+Thomas Wenzel
+Christoph Faﬂbach
+
+Special thanks to
+-----------------
+Simon Neumann
+Torsten Hees
+Henryk Richter
+Greg Donner
+Oliver Eschbach
+
+@{" 7.2   References                    " LINK refs}
+
+@ENDNODE
+
+@NODE refs "Appendices - References"
+@TOC main
+@{" 7     Appendices                    " LINK credits}
+@{" 7.1   Credits                       " LINK credits}
+@{" 7.2   References                    " LINK refs}
+
+(1) @{"https://www.dirk-conrad.net/cgi-bin/commodore.pl?site=mp3_info" system "openurl https://www.dirk-conrad.net/cgi-bin/commodore.pl?site=mp3_info"}
+
+(2) @{"https://gitlab.com/marceljaehne/amiga-mas-player-pro2" system "openurl https://gitlab.com/marceljaehne/amiga-mas-player-pro2"}
+
+(3) @{"http://www.amigaamp.de/Binaries/AmigaAMP3-68k.lha"  system "openurl http://www.amigaamp.de/Binaries/AmigaAMP3-68k.lha"}
+
+(4) @{"https://aminet.net/mus/play/hippoplayer.lha" system "openurl https://aminet.net/mus/play/hippoplayer.lha"}
+
+(5) @{"https://aminet.net/mus/play/hippoplayerupdate.lha"  system "openurl https://aminet.net/mus/play/hippoplayerupdate.lha"}
+
+(6) @{"https://www.amigaforever.com/kb/13-105"  system "openurl https://www.amigaforever.com/kb/13-105"}
+
+@ENDNODE
