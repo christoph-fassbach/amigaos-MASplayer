@@ -98,23 +98,292 @@ to any headphones, boomboxes, or alike was added.
 @{"MASplayer Pro2+ Bluetooth top" system "MultiView ilbm/2+bt-top0.iff"}@{IMG ilbm/2+bt-top0.iff}
 @{"MASplayer Pro2+ Bluetooth bottom" system "MultiView ilbm/2+bt-bottom0.iff"}@{IMG ilbm/2+bt-bottom0.iff}
 
+Please find the @{"hardware project sources (2)" LINK refs} in the references section.
+
 @{" 1.5   System Requirements           " LINK system}
 @ENDNODE
 
 @NODE system "System Requirements"
 @TOC main
+
 @{" 1.5   System Requirements           " LINK system}
 @{" 1.5.1 Minimum Configuration         " LINK system}
+
+       - Amiga computer with parallel port
+       - 512 kB Chip, 1 MB other RAM
+       - 68000 CPU, 28 MHz
+       - Kickstart 1.3
+       - MASplayer Pro
+
 @{" 1.5.2 Recommended Configuration     " LINK system}
 
+       - Amiga computer with parallel port
+       - 1 MB Chip, 2 MB Fast RAM
+       - 68020 CPU, 14 MHz
+       - Kickstart 2.x / 3.x
+       - MASplayer Pro 2+ Bluetooth
 
+Even though you can use the MASplayer with Kick 1.3 using MHIplay
+or HippoPlayer, Kick 2.x / 3.x is strongly recommended to
+yield maximum application compatibility. Kick 2.0+ is also much faster.
 
+@{" 2     Installation                  " LINK hw_inst}
+@ENDNODE
+
+@NODE hw_inst "MASplayer Installation"
+@TOC main
+@{" 2     Installation                  " LINK hw_inst}
+@{" 2.1   MASplayer Installation        " LINK hw_inst}
+
+Turn off your Amiga computer and connect your MASplayer to the
+parallel port. Take care to supply it with power via the USB port.
+While it is @{b}possible@{ub} to use an external power supply, we can
+@{b}not@{ub} wholeheartedly recommend doing so. You may inject high frequency
+noise, power spikes or power surges into your Amiga, leading to severe
+damage or instabilities. Please use an adapter to draw power from
+@{"joystick port (3)" LINK refs}, serial port or floppy port instead.
+
+Please attach a stereo RCA to 3.5mm stereo phone connector adapter cable
+between your Amiga's Paula output and the input jack if you use a 
+MASplayer Pro 2+ or later. Connect your speakers to the output of the
+MASplayer accordingly.
+
+Please do not connect or disconnect anything while your Amiga is powered!
+
+@{b}- Have been there, tried that, was not cool! -@{ub}
+@{b}You may let the magic smoke out and your Amiga does not work without!@{ub}
+
+@{" 2.2   Software Installation         " LINK sw_inst}
+@ENDNODE
+
+@NODE sw_inst "Software Installation"
+@TOC main
+@{" 2.2   Software Installation         " LINK sw_inst}
+
+The MASplayer software package for OS 1.3 and 2.0 and above comes in
+- a single lha archive,
+- or on one ADF file.
+
+Please do not use the OS 1.3 installers to install your MASplayer on
+newer AmigaOS versions. They work well on OS 1.3, and while we try our
+best to make the MASplayer enjoyable on all compatible configurations,
+we cannot wield any magic.
+@{" 2.2.1 OS 1.3 Software Installation  " LINK sw_inst13}
+@ENDNODE
+
+@NODE sw_inst13 "OS 1.3 Software Installation"
+@TOC main
+@{" 2.2.1 OS 1.3 Software Installation  " LINK sw_inst13}
+
+Commodore and its successors only released the Installer for OS 2.0 and
+later. Therefore, the AmiGUS OS 1.3 disk provides installers in different
+languages as simple Shell scripts.
+In all languages, their functionality is the same:
+
+They open a window expecting the user to provide input via keyboard.
+Positive acknowledgements are triggered by pressing the <Y> key,
+negative or rejection can be expressed by pushing the <N> key.
+In any case, <Return> or <Enter> key need to follow.
+While the current keyboard layout applies,
+the keys required stay the same.
+
+TODO!!!
+
+The last step is to optionally install the AmigaGuide manual.
+To use any AmigaGuide on AmigaOS versions earlier than 3.0,
+you will need to install the "AmigaGuide Development" version from:
+
+@{"https://aminet.net/text/hyper/aguide34.lha" system "openurl https://aminet.net/text/hyper/aguide34.lha"}
+
+To enable display of images as well, you need to copy the
+iffparse.library from OS 2.0 to your OS 1.3 installation.
+
+The recommendation is to do so, just to enjoy seeing AmigaGuides working
+in OS 1.3.
+
+@{" 2.2.2 OS 2.0+ Software Installation " LINK sw_inst20}
+@ENDNODE
+
+@NODE sw_inst20 "OS 2.0+ Software Installation"
+@TOC main
+@{" 2.2.2 OS 2.0+ Software Installation " LINK sw_inst20}
+
+On OS 2.0 and later, the MASplayer software installation relies on the
+Amiga Installer being available in path from the underlying OS.
+
+But Commodore only introduced the Installer in OS 2.1 and since then,
+it is part of the AmiagaOS installation. So before installing the
+AmiGUS software on OS 2.0, you may need to install the Installer from:
+
+@{"https://aminet.net/util/misc/Installer-43_3.lha" system "openurl https://aminet.net/util/misc/Installer-43_3.lha"}
+
+We tested the installation with an early Installer from OS 2.1 that does
+not even have version information included, but there may be even older
+or worse versions of it out there. In case you experience issues during
+the software installation, Installer 43.3 as per above may serve as a
+common ground.
+
+Similarly, to use any AmigaGuide on AmigaOS versions earlier than 3.0,
+namely OS 2.0 and OS 2.1, you will need to install
+the "AmigaGuide Development" version from:
+
+@{"https://aminet.net/text/hyper/aguide34.lha" system "openurl https://aminet.net/text/hyper/aguide34.lha"}
+
+The AmiGUS AmigaGuide manual looks best on OS 3.2 and above, but you
+can at least read it conveniently using an older version.
+
+Again, the installation comes in multiple languages and should just work
+the same in all languages. If you would like to see the installation
+procedure and/or the manual translated to other languages, feel free to
+reach out to us e.g. via our @{"gitlab (2)" LINK refs} or @{"github (4)" LINK refs} presences.
+
+"Novice User", "Intermediate User" and "Expert User" level installations
+are available.
+
+"Novice User" installs all recommended parts without further questions
+to the recommended destinations. This should work fine for most users.
+Please note:
+- If you downgrade your CPU after installation and experience issues
+  using the MASplayer, you may need to reinstall the drivers.
+- The default installation path of MASplayer tools and manual is
+  Sys:Expansion/MASplayer - which may collide with some versions of
+  Commodore's Janus bridgeboard software. If you experience any issues,
+  please delete the MASplayer software installed to that location,
+  reinstall and select another path.
+
+In "Intermediate User" level installations, you may pick and choose a lot
+of options. For the details of those, please refer to the help texts
+embedded into the Installer when pushing the "Help" buttons available
+everywhere.
+
+In addition to the above, only "Expert User" level installations allow
+for placement of all CPU or debug versions of AHI and MHI drivers next
+to the activated ones.
+
+@{" 3     MHI Driver Framework          " LINK mhi}
+@ENDNODE
+
+@NODE mhi "MHI Driver Framework"
+@TOC main
+@{" 3     MHI Driver Framework          " LINK mhi}
+
+MHI is a standard for retargetable encoded audio for classic Amigas.
+MASplayer comes with the MAS 3507D audio codec chip supporting
+MP3 (MPEG 1 and 2 audio layer II, layer III, with CBR, VBR, and ABR).
+
+MHI comes without separate system-wide preferences. Every application
+implements their own system of setting and selecting the desired MHI
+compatible library for the installed hardware.
+Per default, MASplayer's MHI driver is installed to
+Libs:mhi/mhimaspro.library on AmigaOS 2.0 and above.
+On AmigaOS 1.3, there are problems loading libraries from other
+locations than Libs:, hence it will be installed to 
+Libs:mhimaspro.library to ensure hassle-free usage.
+
+@{" 3.1   Example: MHI in AmigaAmp      " LINK mhi_amigaamp}
+@ENDNODE
+
+@NODE mhi_amigaamp "MHI Driver Framework - AmigaAmp"
+@TOC contents
+@{" 3.1   Example: MHI in AmigaAmp      " LINK mhi_amigaamp}
+
+As Thomas Wenzel not only created @{"AmigaAMP (5)" LINK refs} but has 
+also been co-authoring MHI, integration of both works almost perfectly,
+including equalizer functionality.
+@{JCENTER}
+@{"AmigaAmp Main" system "MultiView ilbm/amp0.iff"}@{IMG ilbm/amp0.iff}
+@{JLEFT}
+After starting AmigaAMP, open the preferences via the Project menu entry.
+@{JCENTER}
+@{"AmigaAmp Menu" system "MultiView ilbm/amp1.iff"}@{IMG ilbm/amp1.iff}
+@{JLEFT}
+In the preferences, navigate to the Decoder tab, tick the "MHI Support"
+checkbox and click the file symbol next to "MHI Driver:".
+@{JCENTER}
+@{"AmigaAmp Prefs" system "MultiView ilbm/amp2.iff"}@{IMG ilbm/amp2.iff}
+@{JLEFT}
+Navigate to Libs:mhi and select the mhimaspro.library. Library names are
+case-sensitive when loading and the more readable name had to be
+sacrificed to support AmigaOS 1.3.
+@{JCENTER}
+@{"AmigaAmp MHI File Requester" system "MultiView ilbm/amp3.iff"}@{IMG ilbm/amp3.iff}
+@{JLEFT}
+Confirm with the "OK" button, close and confirm the preferences dialog
+with the "Save" button. You may need to restart AmigaAMP immediately.
+Add a few MP3 files to your playlist and enjoy!
+
+@{" 3.2   Example: MHI in HippoPlayer   " LINK mhi_hippoplayer}
+@ENDNODE
+
+@NODE mhi_hippoplayer "MHI Driver Framework - HippoPlayer"
+@TOC contents
+@{" 3.2   Example: MHI in HippoPlayer   " LINK mhi_hippoplayer}
+
+@{"HippoPlayer (6, 7)" LINK refs} by K-P Koljonen not only works from AmigaOS 1.2
+and later but has also been successfully tested with MHI on AmigaOS 1.3
+on a 68000.
+In addition, it also supports the AmiGUS wavetable engine natively for
+tracker module playback as of version 2.62 onwards.
+@{JCENTER}
+@{"HippoPlayer Main" system "MultiView ilbm/hippo0.iff"}@{IMG ilbm/hippo0.iff}
+@{JLEFT}
+Click the "Pr" button to open the preferences window.
+@{JCENTER}
+@{"HippoPlayer Prefs" system "MultiView ilbm/hippo1.iff"}@{IMG ilbm/hippo1.iff}
+@{JLEFT}
+Navigate to the "Play-2" tab, select the "Enable MHI" checkbox and push
+the button right next to it, where it reads "mhimaspro" above.
+@{JCENTER}
+@{"HippoPlayer MHI File Requester" system "MultiView ilbm/hippo2.iff"}@{IMG ilbm/hippo2.iff}
+@{JLEFT}
+Navigate to the mhimaspro.library in AmigaOS 1.3 that will be in Libs:;
+in AmigaOS 2.0 and later it will be in Libs:MHI.
+Select it, push the "OK" button, and save the preferences using the
+"Save" button.
+Add a few MP3 files to your playlist and enjoy!
+
+@{" 4     Driver troubleshooting        " LINK drivers}
+@ENDNODE
+
+@NODE drivers "Driver troubleshooting"
+@TOC contents
+@{" 4     Driver troubleshooting        " LINK drivers}
+
+MHI drivers come with release and debug versions. Never use the
+debug versions for normal operations - they may introduce more crashes and
+are slower!
+
+  - "...-SER_LOG" versions of the drivers log to the serial port of the
+    Amiga. You may use Sashimi to redirect the output back into a
+    Workbench window, but the speed of that debug output is limited,
+    therefore the level of detail as well. A real null-modem cable can be
+    used to get the output to another computer. Please find a link to a
+    tested wiring at @{"(8)" LINK refs}.
+  - MHILibCheck tries loading the AmiGUS MHI driver and calls a method
+    retrieving additional information from it. This is especially useful
+    if the MHI driver is not loaded successfully in OS 1.3. If it does not
+    work here, something is very wrong.
+  - MHIplay is an OS 1.3 compatible command line player for MP3s and
+    similar encoded files. While PlayMP3 directly talks to the hardware,
+    this now tries using the MHI driver. If that works and another
+    player does not work with the MHI driver correctly, it is likely the
+    other player's fault.
+    MHIplay requires two parameters, the driver and the file,
+    e.g. in OS 1.3:
+    > mhiplay libs:mhimaspro.library music:nena/99_red_balloons.mp3
+    or OS 2.0:
+    > mhiplay libs:mhi/mhimaspro.library music:nena/99_red_balloons.mp3
+
+We hope you will never need this information;
+please be patient, we did our best!
+
+@{" 5     Appendices                    " LINK credits}
 @ENDNODE
 
 @NODE credits "Appendices - Credits"
 @TOC main
-@{" 7     Appendices                    " LINK credits}
-@{" 7.1   Credits                       " LINK credits}
+@{" 5     Appendices                    " LINK credits}
+@{" 5.1   Credits                       " LINK credits}
 
 Original concept & hardware design
 ----------------------------------
@@ -138,26 +407,30 @@ Henryk Richter
 Greg Donner
 Oliver Eschbach
 
-@{" 7.2   References                    " LINK refs}
+@{" 5.2   References                    " LINK refs}
 
 @ENDNODE
 
 @NODE refs "Appendices - References"
 @TOC main
-@{" 7     Appendices                    " LINK credits}
-@{" 7.1   Credits                       " LINK credits}
-@{" 7.2   References                    " LINK refs}
+@{" 5     Appendices                    " LINK credits}
+@{" 5.1   Credits                       " LINK credits}
+@{" 5.2   References                    " LINK refs}
 
 (1) @{"https://www.dirk-conrad.net/cgi-bin/commodore.pl?site=mp3_info" system "openurl https://www.dirk-conrad.net/cgi-bin/commodore.pl?site=mp3_info"}
 
 (2) @{"https://gitlab.com/marceljaehne/amiga-mas-player-pro2" system "openurl https://gitlab.com/marceljaehne/amiga-mas-player-pro2"}
 
-(3) @{"http://www.amigaamp.de/Binaries/AmigaAMP3-68k.lha"  system "openurl http://www.amigaamp.de/Binaries/AmigaAMP3-68k.lha"}
+(3) @{"https://www.amiga-shop.net/en/Amiga-Hardware/Amiga-classic-hardware/Joyport-Power-Adapter-Power-thief::1314.html" system "openurl https://www.amiga-shop.net/en/Amiga-Hardware/Amiga-classic-hardware/Joyport-Power-Adapter-Power-thief::1314.html"}
 
-(4) @{"https://aminet.net/mus/play/hippoplayer.lha" system "openurl https://aminet.net/mus/play/hippoplayer.lha"}
+(4) @{"https://github.com/christoph-fassbach/amigaos-MASplayer" system "openurl https://github.com/christoph-fassbach/amigaos-MASplayer"}
 
-(5) @{"https://aminet.net/mus/play/hippoplayerupdate.lha"  system "openurl https://aminet.net/mus/play/hippoplayerupdate.lha"}
+(5) @{"http://www.amigaamp.de/Binaries/AmigaAMP3-68k.lha"  system "openurl http://www.amigaamp.de/Binaries/AmigaAMP3-68k.lha"}
 
-(6) @{"https://www.amigaforever.com/kb/13-105"  system "openurl https://www.amigaforever.com/kb/13-105"}
+(6) @{"https://aminet.net/mus/play/hippoplayer.lha" system "openurl https://aminet.net/mus/play/hippoplayer.lha"}
+
+(7) @{"https://aminet.net/mus/play/hippoplayerupdate.lha"  system "openurl https://aminet.net/mus/play/hippoplayerupdate.lha"}
+
+(8) @{"https://www.amigaforever.com/kb/13-105"  system "openurl https://www.amigaforever.com/kb/13-105"}
 
 @ENDNODE
