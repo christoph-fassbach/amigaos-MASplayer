@@ -1,0 +1,295 @@
+.KEY ""
+.BRA {
+.KET }
+
+FAILAT 10
+
+; *e[30m - blue
+; *e[31m - white
+; *e[32m - black
+; *e[33m - orange
+
+RESIDENT C:ECHO
+RESIDENT C:ASK
+RESIDENT C:ASSIGN
+RESIDENT C:IF
+RESIDENT C:ENDIF
+RESIDENT C:EDIT
+
+ASSIGN MASplayer-13-SRC: ""
+
+ECHO "Wilkommen beim MASplayer OS 1.3 Installationsskript."
+ECHO ""
+ECHO "Wenn Sie die Installation abbrechen wollen, drücken Sie bitte "
+ECHO "wiederholt CTRL-C. Falls etwas unklar ist, lesen Sie bitte zunächst"
+ECHO "die ReadMeFirst.txt gefolgt von dem Handbuch."
+ECHO ""
+ECHO "+-------------------------------------------------------------------+"
+ECHO "|                    Basiswerkzeuginstallation                      |"
+ECHO "+-------------------------------------------------------------------+"
+ECHO ""
+ASK "Möchten Sie die MASplayer Basiswerkzeuge installieren? (y/N)"
+
+IF WARN
+  ECHO "Das Standardinstallationsverzeichnis der MASplayer Basiswerkzeuge"
+  ECHO "ist: *e[33mSYS:Expansion/MASplayer*e[31m"
+  ECHO "Allerdings kann es Probleme mit ... sehr gut ... programmierten"
+  ECHO "Treibern und Software verursachen, dort weitere Dinge zu"
+  ECHO "installieren."
+  ECHO ""
+  ASK "Möchten Sie das Zielverzeichnis vor der Installation anpassen? (y/N)"
+ 
+  IF WARN
+    ECHO "Bitte geben Sie ihr gewünschtes Installationsverzeichnis ein"
+    ECHO "und drücken Sie die Eingabetaste:"
+    SETENV >NIL: TOOLSPATH ?
+  ELSE
+    SETENV >NIL: TOOLSPATH "SYS:Expansion/MASplayer"
+  ENDIF
+
+  ECHO   >  RAM:MASplayer_installer1 "IF NOT EXISTS TOOLSPATH"
+  ECHO   >> RAM:MASplayer_installer1 "  MAKEDIR TOOLSPATH"
+  ECHO   >> RAM:MASplayer_installer1 "ENDIF"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MASplayer-13-SRC:Tools/#? TOOLSPATH"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MASplayer-13-SRC:Tools.info TOOLSPATH.info"
+
+  ; Prepare EDIT script to replace TOOLSPATH with correct path in installer script
+  ECHO   >  RAM:MASplayer_editscript1 "GE ?TOOLSPATH?" NOLINE
+  GETENV >> RAM:MASplayer_editscript1 TOOLSPATH
+  ECHO   >> RAM:MASplayer_editscript1 "?" NOLINE
+
+  ; Prepare 2nd EDIT script to put 1st EDIT script into single line... *sigh*
+  ECHO   >  RAM:MASplayer_editscript2 "CL //"
+  
+  ; Run 2nd EDIT script on 1st EDIT script
+  EDIT >NIL: FROM RAM:MASplayer_editscript1 TO RAM:MASplayer_editscript3 WITH RAM:MASplayer_editscript2
+
+  ; Run 1st EDIT script on installer script
+  EDIT >NIL: FROM RAM:MASplayer_installer1 TO RAM:MASplayer_installer2 WITH RAM:MASplayer_editscript3
+
+  ; Run installer script
+  EXECUTE RAM:MASplayer_installer2
+
+  ; Clean that mess up again...
+  DELETE >NIL: RAM:MASplayer_editscript#? RAM:MASplayer_installer#?
+ENDIF
+
+ECHO ""
+ECHO "+-------------------------------------------------------------------+"
+ECHO "|                      MHI-Treiberinstallation                      |"
+ECHO "+-------------------------------------------------------------------+"
+ECHO ""
+ECHO "OS 1.3 ist etwas ... wählerisch ... wenn es um das Laden von"
+ECHO "Bibliotheken geht."
+ECHO "Um MHI zuverlässig zum Funktionieren zu bewegen, sollte der MHI-"
+ECHO "Treiber an den Standardort für Bibliotheken installiert"
+ECHO "werden - LIBS:."
+ECHO ""
+ECHO "Die üblichen Versionen des MASplayer sind pro, pro2, pro2+ und"
+ECHO "pro2+ mit Bluetooth. Deshalb sollte dies in 99% der Fälle"
+ECHO "die richtige Treiberversion für Ihren MASplayer sein."
+ECHO ""
+ASK "Möchten Sie mhimaspro.library nach LIBS: installieren? (y/N)"
+
+IF WARN
+  ECHO "Welchen MHI-Treiber möchten Sie installieren?"
+  ECHO ""
+  ECHO "1) 68000, RELEASE-Version, kein Logging, EMPFOHLEN!!!"
+  ECHO "2) 68000, DEBUG-Version, serielles Logging"
+  ECHO "5) 68020, RELEASE-Version, kein Logging, für 68020+"
+  ECHO "6) 68020, DEBUG-Version, serielles Logging, für 68020+"
+  ECHO ""
+  ECHO "*e[33mStandard: 1*e[31m - Bitte drücken Sie 1-8 gefolgt von Return:"
+  SETENV >NIL: mhi_variant ?
+
+  IF $mhi_variant EQ 2
+    COPY MHI/mhimaspro.library-000-SER_LOG LIBS:mhimaspro.library CLONE
+    ECHO "Option 2 kopiert..."
+  ELSE
+    IF $mhi_variant EQ 3
+      COPY MHI/mhimaspro.library-000-FILE_LOG LIBS:mhimaspro.library CLONE
+      ECHO "Option 3 kopiert..."
+    ELSE
+      IF $mhi_variant EQ 4
+        COPY MHI/mhimaspro.library-000-MEM_LOG LIBS:mhimaspro.library CLONE
+        ECHO "Option 4 kopiert..."
+      ELSE
+        IF $mhi_variant EQ 5
+          COPY MHI/mhimaspro.library-020-NO_LOG LIBS:mhimaspro.library CLONE
+          ECHO "Option 5 kopiert..."
+        ELSE
+          IF $mhi_variant EQ 6
+            COPY MHI/mhimaspro.library-020-SER_LOG LIBS:mhimaspro.library CLONE
+            ECHO "Option 6 kopiert..."
+          ELSE
+            IF $mhi_variant EQ 7
+              COPY MHI/mhimaspro.library-020-FILE_LOG LIBS:mhimaspro.library CLONE
+              ECHO "Option 7 kopiert..."
+            ELSE
+              IF $mhi_variant EQ 8
+                COPY MHI/mhimaspro.library-020-MEM_LOG LIBS:mhimaspro.library CLONE
+                ECHO "Option 8 kopiert..."
+              ELSE
+                COPY MHI/mhimaspro.library-000-NO_LOG LIBS:mhimaspro.library CLONE
+                ECHO "Option 1 kopiert..."
+              ENDIF
+            ENDIF
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+ENDIF
+
+ECHO ""
+ECHO "Möchten Sie alle Varianten der mhimaspro.library nach LIBS: kopieren,"
+ASK "um sie möglicherweise später umzubennenen und zu verwenden? (y/N)"
+
+IF WARN
+  copy MHI/mhimaspro.library#? LIBS:
+ENDIF
+
+ECHO ""
+ECHO "In unter 1% der Fälle sollte dies der richtige Treiber sein, bitte"
+ECHO "nur installieren, wenn Sie sicher sind, dass Sie einen"
+ECHO "MASplayer Standard haben."
+ECHO ""
+ASK "Möchten Sie mhimasstd.library nach LIBS: installieren? (y/N)"
+
+IF WARN
+  ECHO "Welchen MHI-Treiber möchten Sie installieren?"
+  ECHO ""
+  ECHO "1) 68000, RELEASE-Version, kein Logging, EMPFOHLEN!!!"
+  ECHO "2) 68000, DEBUG-Version, serielles Logging"
+  ECHO "5) 68020, RELEASE-Version, kein Logging, für 68020+"
+  ECHO "6) 68020, DEBUG-Version, serielles Logging, für 68020+"
+  ECHO ""
+  ECHO "*e[33mStandard: 1*e[31m - Bitte drücken Sie 1-8 gefolgt von Return:"
+  SETENV >NIL: mhi_variant ?
+
+  IF $mhi_variant EQ 2
+    COPY MHI/mhimasstd.library-000-SER_LOG LIBS:mhimasstd.library CLONE
+    ECHO "Option 2 kopiert..."
+  ELSE
+    IF $mhi_variant EQ 3
+      COPY MHI/mhimasstd.library-000-FILE_LOG LIBS:mhimasstd.library CLONE
+      ECHO "Option 3 kopiert..."
+    ELSE
+      IF $mhi_variant EQ 4
+        COPY MHI/mhimasstd.library-000-MEM_LOG LIBS:mhimasstd.library CLONE
+        ECHO "Option 4 kopiert..."
+      ELSE
+        IF $mhi_variant EQ 5
+          COPY MHI/mhimasstd.library-020-NO_LOG LIBS:mhimasstd.library CLONE
+          ECHO "Option 5 kopiert..."
+        ELSE
+          IF $mhi_variant EQ 6
+            COPY MHI/mhimasstd.library-020-SER_LOG LIBS:mhimasstd.library CLONE
+            ECHO "Option 6 kopiert..."
+          ELSE
+            IF $mhi_variant EQ 7
+              COPY MHI/mhimasstd.library-020-FILE_LOG LIBS:mhimasstd.library CLONE
+              ECHO "Option 7 kopiert..."
+            ELSE
+              IF $mhi_variant EQ 8
+                COPY MHI/mhimasstd.library-020-MEM_LOG LIBS:mhimasstd.library CLONE
+                ECHO "Option 8 kopiert..."
+              ELSE
+                COPY MHI/mhimasstd.library-000-NO_LOG LIBS:mhimasstd.library CLONE
+                ECHO "Option 1 kopiert..."
+              ENDIF
+            ENDIF
+          ENDIF
+        ENDIF
+      ENDIF
+    ENDIF
+  ENDIF
+ENDIF
+
+ECHO ""
+ECHO "Möchten Sie alle Varianten der mhimasstd.library nach LIBS: kopieren,"
+ASK "um sie möglicherweise später umzubennenen und zu verwenden? (y/N)"
+
+IF WARN
+  copy MHI/mhimasstd.library#? LIBS:
+ENDIF
+
+ECHO ""
+ECHO "+-------------------------------------------------------------------+"
+ECHO "|                       AmigaGuide Anleitung                        |"
+ECHO "+-------------------------------------------------------------------+"
+ECHO ""
+
+ASK "Möchten Sie die MASplayer AmigaGuide Anleitung installieren? (y/N)"
+IF WARN
+  ECHO "Das Standardinstallationsverzeichnis für die MASplayer Anleitung"
+  ECHO "ist: *e[33mSYS:Expansion/MASplayer*e[31m"
+  ECHO "Nunja, die Geschichte kennen sie wahrscheinlich schon..."
+  ECHO ""
+  ASK "Möchten Sie das Zielverzeichnis vor der Installation anpassen? (y/N)"
+ 
+  IF WARN
+    ECHO "Bitte geben Sie ihr gewünschtes Installationsverzeichnis ein"
+    ECHO "und drücken Sie die Eingabetaste:"
+    SETENV >NIL: TOOLSPATH ?
+  ELSE
+    SETENV >NIL: TOOLSPATH "SYS:Expansion/MASplayer"
+  ENDIF
+
+  ASSIGN >NIL: MASplayer-Manual:
+
+  IF EXISTS MASplayer-13-SRC:Manual
+    ; Installing from lha archive
+    SETENV >NIL: MANUALPATH "MASplayer-13-SRC:Manual/"
+  ELSE
+    ; Installing from ADF/Disk
+    SETENV >NIL: MANUALPATH "MASplayer-Manual:"
+  ENDIF
+
+  ECHO   >  RAM:MASplayer_installer1 "IF NOT EXISTS TOOLSPATH"
+  ECHO   >> RAM:MASplayer_installer1 "  MAKEDIR TOOLSPATH"
+  ECHO   >> RAM:MASplayer_installer1 "ENDIF"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHilbm TOOLSPATH/ilbm"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHMASplayer.guide TOOLSPATH/MASplayer.guide"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHMASplayer.guide.infoV38 TOOLSPATH/MASplayer.guide.info"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHMASplayerv38.guide TOOLSPATH/MASplayerv38.guide"
+
+  ; Prepare EDIT script to replace MANUALPATH with correct path in installer script
+  ECHO   >  RAM:MASplayer_editscript1 "GE ?MANUALPATH?" NOLINE
+  GETENV >> RAM:MASplayer_editscript1 MANUALPATH
+  ECHO   >> RAM:MASplayer_editscript1 "?" NOLINE
+
+  ; Prepare EDIT script to replace TOOLSPATH with correct path in installer script
+  ECHO   >  RAM:MASplayer_editscript2 "GE ?TOOLSPATH?" NOLINE
+  GETENV >> RAM:MASplayer_editscript2 TOOLSPATH
+  ECHO   >> RAM:MASplayer_editscript2 "?" NOLINE
+
+  ; Prepare 2nd EDIT script to put 1st + 2nd EDIT script into single line... *sigh*
+  ECHO   >  RAM:MASplayer_editscript3 "CL //"
+  
+  ; Run 2nd EDIT script on 1st EDIT script
+  EDIT >NIL: FROM RAM:MASplayer_editscript1 TO RAM:MASplayer_editscript4 WITH RAM:MASplayer_editscript3
+
+  ; Run 2nd EDIT script on 1st EDIT script
+  EDIT >NIL: FROM RAM:MASplayer_editscript2 TO RAM:MASplayer_editscript5 WITH RAM:MASplayer_editscript3
+
+  ; Run 1st EDIT script on installer script
+  EDIT >NIL: FROM RAM:MASplayer_installer1 TO RAM:MASplayer_installer2 WITH RAM:MASplayer_editscript4
+
+  ; Run 2nd EDIT script on installer script
+  EDIT >NIL: FROM RAM:MASplayer_installer2 TO RAM:MASplayer_installer3 WITH RAM:MASplayer_editscript5
+
+  ; Run installer script
+  EXECUTE RAM:MASplayer_installer3
+
+  ; Clean that mess up again...
+  DELETE >NIL: RAM:MASplayer_editscript#? RAM:MASplayer_installer#?
+
+ENDIF
+
+ECHO ""
+ECHO "+-------------------------------------------------------------------+"
+ECHO "|              Alles fertig - einen schönen Tag noch!               |"
+ECHO "+-------------------------------------------------------------------+"
+
+ENDCLI

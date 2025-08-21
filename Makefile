@@ -280,6 +280,7 @@ package:
 	    -e "s#ilbm/#MASplayer-Manual:ilbm/#"        \
 	    Docs/Manual/MASplayer.guide           > $(ADFDIR)/Manual/MASplayerv38.guide
 	cp -R Docs/Manual/ilbm                      $(ADFDIR)/Manual
+	cp Installer/MASplayer.guide.infoV38        $(ADFDIR)/Manual/
 
 	cp Installer/Disk.info                      $(ADFDIR)/
 	cp Installer/GPL.txt.info                   $(ADFDIR)/GPL.txt.info
@@ -290,13 +291,13 @@ package:
 	cp Installer/ReadMeFirst.txt.info           $(ADFDIR)/ReadMeFirst.txt.info
 
 	cp "Installer/MASplayer MHI installer"      $(ADFDIR)/
-	cp "Installer/2.0+ - English.info"          $(ADFDIR)/
-	cp "Installer/2.0+ - Deutsch.info"          $(ADFDIR)/
+	cp "Installer/2.0+English.info"             $(ADFDIR)/
+	cp "Installer/2.0+Deutsch.info"             $(ADFDIR)/
 
-	cp "Installer/1.3 - English"                $(ADFDIR)/
-	cp "Installer/1.3 - English.info"           $(ADFDIR)/
-	cp "Installer/1.3 - Deutsch"                $(ADFDIR)/
-	cp "Installer/1.3 - Deutsch.info"           $(ADFDIR)/
+	cp "Installer/1.3-English"                  $(ADFDIR)/
+	cp "Installer/1.3-English.info"             $(ADFDIR)/
+	cp "Installer/1.3-Deutsch"                  $(ADFDIR)/
+	cp "Installer/1.3-Deutsch.info"             $(ADFDIR)/
 
 	umount $(ADFDIR)/
 	-cp $(ADFIMG) ~/Documents/FS-UAE/Shared/MHI/
