@@ -48,7 +48,7 @@ IF WARN
   ECHO   >> RAM:MASplayer_installer1 "  MAKEDIR TOOLSPATH"
   ECHO   >> RAM:MASplayer_installer1 "ENDIF"
   ECHO   >> RAM:MASplayer_installer1 "COPY MASplayer-13-SRC:Tools/#? TOOLSPATH"
-  ECHO   >> RAM:MASplayer_installer1 "COPY MASplayer-13-SRC:Tools.info TOOLSPATH.info"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MASplayer-13-SRC:Folder.infoV36 TOOLSPATH.info"
 
   ; Prepare EDIT script to replace TOOLSPATH with correct path in installer script
   ECHO   >  RAM:MASplayer_editscript1 "GE ?TOOLSPATH?" NOLINE
@@ -247,6 +247,7 @@ IF WARN
   ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHMASplayer.guide TOOLSPATH/MASplayer.guide"
   ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHMASplayer.guide.infoV38 TOOLSPATH/MASplayer.guide.info"
   ECHO   >> RAM:MASplayer_installer1 "COPY MANUALPATHMASplayerv38.guide TOOLSPATH/MASplayerv38.guide"
+  ECHO   >> RAM:MASplayer_installer1 "COPY MASplayer-13-SRC:Folder.infoV36 TOOLSPATH.info"
 
   ; Prepare EDIT script to replace MANUALPATH with correct path in installer script
   ECHO   >  RAM:MASplayer_editscript1 "GE ?MANUALPATH?" NOLINE

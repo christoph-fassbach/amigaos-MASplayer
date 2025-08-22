@@ -264,6 +264,7 @@ package:
 	         $(ADFDIR)/Manual
 
 	cp Installer/MHI.info                       $(ADFDIR)/
+	cp Installer/Folder.infoV36                 $(ADFDIR)/
 	cp $(DDIR)/*\.library*                      $(ADFDIR)/MHI/
 
 	cp Installer/Tools.info                     $(ADFDIR)/
