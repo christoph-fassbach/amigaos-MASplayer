@@ -64,8 +64,9 @@ DDIR   = target/
 BDIR   = build/
 SDIR   = src/
 HDIR   = header/
-ADFDIR = $(DDIR)adf/
-ADFIMG = $(DDIR)/MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.adf
+ADFDIR = $(DDIR)MASplayer-MHI
+ADFIMG = $(DDIR)MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.adf
+LHAARC = MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.lha
 
 MAS_VERSION    ?= pro
 LIB_CPU        ?= 000
@@ -300,8 +301,12 @@ package:
 	cp "Installer/1.3-Deutsch"                  $(ADFDIR)/
 	cp "Installer/1.3-Deutsch.info"             $(ADFDIR)/
 
-	umount $(ADFDIR)/
-	-cp $(ADFIMG) ~/Documents/FS-UAE/Shared/MHI/
+	cp Installer/drawer.info                    $(ADFDIR).info
+	cd `realpath $(ADFDIR)/..` ; jlha a $(LHAARC) `basename $(ADFDIR)` `basename $(ADFDIR)`.info
+
+	umount $(ADFDIR)
+	-cp $(ADFIMG)                               ~/Documents/FS-UAE/Shared/MHI/
+	-cp $(ADFDIR)/../$(LHAARC)                  ~/Documents/FS-UAE/Shared/MHI/
 
 all-variants:
 	make MAS_VERSION=pro LIB_CPU=000 LIB_LOG=NO_LOG
