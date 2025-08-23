@@ -177,8 +177,8 @@ we cannot wield any magic.
 @{" 2.2.1 OS 1.3 Software Installation  " LINK sw_inst13}
 
 Commodore and its successors only released the Installer for OS 2.0 and
-later. Therefore, the AmiGUS OS 1.3 disk provides installers in different
-languages as simple Shell scripts.
+later. Therefore, the MASplayer OS 1.3 disk provides installers in
+different languages as simple Shell scripts.
 In all languages, their functionality is the same:
 
 They open a window expecting the user to provide input via keyboard.
@@ -188,7 +188,51 @@ In any case, <Return> or <Enter> key need to follow.
 While the current keyboard layout applies,
 the keys required stay the same.
 
-TODO!!!
+You may be asked to enter target installation paths, e.g. for the
+MASplayer base tools. Please keep in mind that only the last level of the
+directory hierarchy may not exist at that point, otherwise an error
+message will occur and the script will be aborted. You may close orphaned
+installation windows by entering "endcli" + <Return>.
+
+The default installation path of MASplayer tools and manual is
+Sys:Expansion/MASplayer - which may collide with some versions of
+Commodore's Janus bridgeboard software. If you experience any issues,
+please delete the MASplayer software installed to that location,
+reinstall and select another path.
+
+The installation procedure starts with the MASplayer base tools.
+MHIplay is a simple command line tool for playback of MP3 media files
+via MHI hardware interfaces. Test checks if the MASplayer MHI driver is
+loadable and responding correctly.
+The recommendation is be to install them to the default path.
+
+The second installation category tackles the MHI driver, described in
+section @{"3 MHI Driver Framework" LINK mhi}. The MASplayer Pro drivers
+are offered first.
+Recommendation would be to install it - it would only reliably work from
+the default path, so there is no option to change the path.
+But you can choose which version of the MHI driver you want to install.
+If you are running OS 1.3 with a 68020 or 68030 CPU only, feel free to
+use the 68020 version. If you want to try using MASplayer with an 68000,
+choose that library variant, please. the 68020+ version gives you a tiny
+performance advantage, but will crash on a 68000.
+As far as we know, OS 1.3 will not work on a 68040 or 68060 CPU at all,
+so we did not offer that choice.
+We do offer using various debug versions of the MHI drivers here.
+Please refrain from using them unless you want to debug issues occuring
+in the release versions or were asked to help debugging an issue
+we cannot reproduce on our end.
+The recommendation is to just use the default, 68000 RELEASE version.
+The final choice in this category is simply copying all available drivers
+without renaming them to disk, to tinker arround with them later.
+This might be helpfull if you own an A2630 accelerator and want
+to disable it every now and then, to show off MASplayer on both,
+the 68030 and 68000 without reinstalling the drivers.
+The recommendation is not to do so.
+
+Next, MASplayer Std drivers are offered, same applies as above, but
+none of them are recommended to be installed as basically all MASplayers
+in use should be MASplayer Pros or newer.
 
 The last step is to optionally install the AmigaGuide manual.
 To use any AmigaGuide on AmigaOS versions earlier than 3.0,
@@ -214,7 +258,7 @@ Amiga Installer being available in path from the underlying OS.
 
 But Commodore only introduced the Installer in OS 2.1 and since then,
 it is part of the AmiagaOS installation. So before installing the
-AmiGUS software on OS 2.0, you may need to install the Installer from:
+MASplayer software on OS 2.0, you may need to install the Installer from:
 
 @{"https://aminet.net/util/misc/Installer-43_3.lha" system "openurl https://aminet.net/util/misc/Installer-43_3.lha"}
 
@@ -230,7 +274,7 @@ the "AmigaGuide Development" version from:
 
 @{"https://aminet.net/text/hyper/aguide34.lha" system "openurl https://aminet.net/text/hyper/aguide34.lha"}
 
-The AmiGUS AmigaGuide manual looks best on OS 3.2 and above, but you
+The MASplayer AmigaGuide manual looks best on OS 3.2 and above, but you
 can at least read it conveniently using an older version.
 
 Again, the installation comes in multiple languages and should just work
@@ -323,8 +367,6 @@ Add a few MP3 files to your playlist and enjoy!
 @{"HippoPlayer (6, 7)" LINK refs} by K-P Koljonen not only works from AmigaOS 1.2
 and later but has also been successfully tested with MHI on AmigaOS 1.3
 on a 68000.
-In addition, it also supports the AmiGUS wavetable engine natively for
-tracker module playback as of version 2.62 onwards.
 @{JCENTER}
 @{"HippoPlayer Main" system "MultiView ilbm/hippo0.iff"}@{IMG ilbm/hippo0.iff}
 @{JLEFT}
@@ -360,10 +402,6 @@ are slower!
     therefore the level of detail as well. A real null-modem cable can be
     used to get the output to another computer. Please find a link to a
     tested wiring at @{"(8)" LINK refs}.
-  - MHILibCheck tries loading the AmiGUS MHI driver and calls a method
-    retrieving additional information from it. This is especially useful
-    if the MHI driver is not loaded successfully in OS 1.3. If it does not
-    work here, something is very wrong.
   - MHIplay is an OS 1.3 compatible command line player for MP3s and
     similar encoded files. While PlayMP3 directly talks to the hardware,
     this now tries using the MHI driver. If that works and another
