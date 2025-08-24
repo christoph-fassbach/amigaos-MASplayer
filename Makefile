@@ -65,7 +65,7 @@ BDIR   = build/
 SDIR   = src/
 HDIR   = header/
 ADFDIR = $(DDIR)MASplayer-MHI
-ADFIMG = $(DDIR)MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.adf
+ADFIMG = MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.adf
 LHAARC = MASplayer-MHI-$(LIB_VERSION).$(LIB_REVISION)-`date +%Y%m%d`.lha
 
 MAS_VERSION    ?= pro
@@ -250,15 +250,65 @@ Test:
 
 ###############################################################################
 
+RELEASE_API_URL = https://api.github.com/repos/christoph-fassbach/amigaos-MASplayer/releases
+UPLOAD_API_URL = https://uploads.github.com/repos/christoph-fassbach/amigaos-MASplayer/releases
+
 release: all-variants package
+
+release-publish: release
+	@if [ -z "$(RELEASE_TAG)" ] ; then echo "Please call \"make RELEASE_TAG='release-1.7-RC1'\" release-publish" ; exit 1 ; fi
+	git tag "$(RELEASE_TAG)"
+	git push --tags
+	curl -L --netrc -X POST                       \
+		-H "Accept: application/vnd.github+json"    \
+		-H "X-GitHub-Api-Version: 2022-11-28"       \
+		$(RELEASE_API_URL)                          \
+		-d '{ "tag_name":"$(RELEASE_TAG)", "target_commitish":"main", "name":"$(RELEASE_TAG)", "body":"Description of the release", "draft":false, "prerelease":true, "generate_release_notes":false }'
+	curl -L --netrc                               \
+		-H "Accept: application/vnd.github+json"    \
+		-H "X-GitHub-Api-Version: 2022-11-28"       \
+		$(RELEASE_API_URL)/tags/$(RELEASE_TAG) | jq -r ".id" > $(BDIR)/TEMP_RELEASE_ID
+	echo "$(RELEASE_TAG) found as $$(cat $(BDIR)/TEMP_RELEASE_ID)"
+	curl -L --netrc                               \
+		-X POST                                     \
+		-H "Accept: application/vnd.github+json"    \
+		-H "X-GitHub-Api-Version: 2022-11-28"       \
+		-H "Content-Type: application/octet-stream" \
+		"$(UPLOAD_API_URL)/$$(cat $(BDIR)/TEMP_RELEASE_ID)/assets?name=$(LHAARC)" \
+		--data-binary "@$(DDIR)/$(LHAARC)"
+	echo $(ADFIMG) > $(BDIR)/TEMP_ADF_FILE_NAME
+	curl -L --netrc                               \
+		-X POST                                     \
+		-H "Accept: application/vnd.github+json"    \
+		-H "X-GitHub-Api-Version: 2022-11-28"       \
+		-H "Content-Type: application/octet-stream" \
+		"$(UPLOAD_API_URL)/$$(cat $(BDIR)/TEMP_RELEASE_ID)/assets?name=$$(cat $(BDIR)/TEMP_ADF_FILE_NAME)" \
+		--data-binary "@$(DDIR)/$$(cat $(BDIR)/TEMP_ADF_FILE_NAME)"
+
+release-unpublish: FOLDERS
+	@if [ -z "$(RELEASE_TAG)" ] ; then echo "Please call \"make RELEASE_TAG='release-1.7-RC1'\" release-publish" ; exit 1 ; fi
+	curl -L --netrc                               \
+		-H "Accept: application/vnd.github+json"    \
+		-H "X-GitHub-Api-Version: 2022-11-28"       \
+		$(RELEASE_API_URL)/tags/$(RELEASE_TAG) | jq -r ".id" > $(BDIR)/TEMP_RELEASE_ID
+	echo "$(RELEASE_TAG) found as $$(cat $(BDIR)/TEMP_RELEASE_ID)"
+	curl -L --netrc                               \
+		-X DELETE                                   \
+		-H "Accept: application/vnd.github+json"    \
+		-H "X-GitHub-Api-Version: 2022-11-28"       \
+		$(RELEASE_API_URL)/$$(cat $(BDIR)/TEMP_RELEASE_ID)
+	git tag -d $(RELEASE_TAG)
+	git push origin :$(RELEASE_TAG)
+
+###############################################################################
 
 package:
 	-umount $(ADFDIR)
-	rm -rf $(ADFIMG)
+	rm -rf $(DDIR)/$(ADFIMG)
 
-	adf_floppy_create $(ADFIMG) dd
-	adf_format -l MASplayerMHI -t 0 -f $(ADFIMG)
-	fuseadf $(ADFIMG) $(ADFDIR)
+	adf_floppy_create $(DDIR)/$(ADFIMG) dd
+	adf_format -l MASplayerMHI -t 0 -f $(DDIR)/$(ADFIMG)
+	fuseadf $(DDIR)/$(ADFIMG) $(ADFDIR)
 
 	mkdir -p $(ADFDIR)/MHI \
 	         $(ADFDIR)/Tools       \
@@ -305,8 +355,8 @@ package:
 	cd `realpath $(ADFDIR)/..` ; jlha a $(LHAARC) `basename $(ADFDIR)` `basename $(ADFDIR)`.info
 
 	umount $(ADFDIR)
-	-cp $(ADFIMG)                               ~/Documents/FS-UAE/Shared/MHI/
-	-cp $(ADFDIR)/../$(LHAARC)                  ~/Documents/FS-UAE/Shared/MHI/
+	-cp $(DDIR)/$(ADFIMG)                       ~/Documents/FS-UAE/Shared/MHI/
+	-cp $(DDIR)/$(LHAARC)                  ~/Documents/FS-UAE/Shared/MHI/
 
 all-variants:
 	make MAS_VERSION=pro LIB_CPU=000 LIB_LOG=NO_LOG
