@@ -25,7 +25,7 @@ RESIDENT C:EDIT
 
 ASSIGN MASplayer-13-SRC: ""
 
-ECHO "Wilkommen beim MASplayer OS 1.3 Installationsskript."
+ECHO "Willkommen beim MASplayer OS 1.3 Installationsskript."
 ECHO ""
 ECHO "Wenn Sie die Installation abbrechen wollen, drücken Sie bitte "
 ECHO "wiederholt CTRL-C. Falls etwas unklar ist, lesen Sie bitte zunächst"

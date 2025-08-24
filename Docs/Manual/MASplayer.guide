@@ -329,7 +329,7 @@ Libs:mhimaspro.library to ensure hassle-free usage.
 @ENDNODE
 
 @NODE mhi_amigaamp "MHI Driver Framework - AmigaAMP"
-@TOC contents
+@TOC main
 @{" 3.1   Example: MHI in AmigaAMP      " LINK mhi_amigaamp}
 
 As Thomas Wenzel not only created @{"AmigaAMP (5)" LINK refs} but has 
@@ -361,7 +361,7 @@ Add a few MP3 files to your playlist and enjoy!
 @ENDNODE
 
 @NODE mhi_hippoplayer "MHI Driver Framework - HippoPlayer"
-@TOC contents
+@TOC main
 @{" 3.2   Example: MHI in HippoPlayer   " LINK mhi_hippoplayer}
 
 @{"HippoPlayer (6, 7)" LINK refs} by K-P Koljonen not only works from AmigaOS 1.2
@@ -389,7 +389,7 @@ Add a few MP3 files to your playlist and enjoy!
 @ENDNODE
 
 @NODE drivers "Driver troubleshooting"
-@TOC contents
+@TOC main
 @{" 4     Driver troubleshooting        " LINK drivers}
 
 MHI drivers come with release and debug versions. Never use the
