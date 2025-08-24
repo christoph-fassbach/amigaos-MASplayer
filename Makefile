@@ -256,7 +256,7 @@ UPLOAD_API_URL = https://uploads.github.com/repos/christoph-fassbach/amigaos-MAS
 release: all-variants package
 
 release-publish: release
-	@if [ -z "$(RELEASE_TAG)" ] ; then echo "Please call \"make RELEASE_TAG='release-1.7-RC1'\" release-publish" ; exit 1 ; fi
+	@if [ -z "$(RELEASE_TAG)" ] ; then echo "Please call \"make RELEASE_TAG='release-1.7-RC1' release-publish\"" ; exit 1 ; fi
 	git tag "$(RELEASE_TAG)"
 	git push --tags
 	curl -L --netrc -X POST                       \
@@ -286,7 +286,7 @@ release-publish: release
 		--data-binary "@$(DDIR)/$$(cat $(BDIR)/TEMP_ADF_FILE_NAME)"
 
 release-unpublish: FOLDERS
-	@if [ -z "$(RELEASE_TAG)" ] ; then echo "Please call \"make RELEASE_TAG='release-1.7-RC1'\" release-publish" ; exit 1 ; fi
+	@if [ -z "$(RELEASE_TAG)" ] ; then echo "Please call \"make RELEASE_TAG='release-1.7-RC1' release-unpublish\"" ; exit 1 ; fi
 	curl -L --netrc                               \
 		-H "Accept: application/vnd.github+json"    \
 		-H "X-GitHub-Api-Version: 2022-11-28"       \
