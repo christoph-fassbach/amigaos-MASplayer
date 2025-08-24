@@ -121,6 +121,18 @@ Additional switches:
 * `make MAS_VERSION=pro` build the MHI driver for MAS player pro
   * `...........=std` build the MHI driver for MAS player std
 
-### Packaging
+### Packaging & releasing
 
-TBD
+I am lazy as f***, so releasing is semi-automated as well.
+This requires a Linux build machine kind of, with vamos, curl, jq, and jlha installed and the correct credentials for api.github.com and uploads.github.com added to `~/.netrc`.
+
+* `make all-variants` iterates over all CPU and logging variants and builds them
+* `make package` takes all variants and places them into a nice LHA archive and an even nicer ADF file 
+* `make release' combines the two above
+* `make RELEASE_TAG='release-1.7-RC1' release-publish` builds a release, tags it accordingly and publishes it to [github releases page](https://github.com/christoph-fassbach/amigaos-MASplayer/releases) as pre-release. Please move over there to edit the release note. Remove the `-RC1` appendix when happy. Done.
+* `make RELEASE_TAG='release-1.7-RC1' release-unpublish` removes the tags and the release in case something was odd. No recovery, handle with care!
+
+### Bugs?
+
+Please report any issues found [here](https://github.com/christoph-fassbach/amigaos-MASplayer/issues) - happy for any input. :)
+Enjoy!
