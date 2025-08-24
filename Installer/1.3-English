@@ -10,9 +10,9 @@ FAILAT 10
 
 C:VERSION >NIL: exec.library 36
 IF NOT WARN
-  ECHO "Sie verwenden OS2.0 oder neuer."
-  ECHO "Bitte verwenden Sie die OS2.0+ Installationsskripte."
-  ECHO "Dankeschön!"
+  ECHO "You are running an OS2.0 or above."
+  ECHO "Please use the OS2.0+ installer scripts."
+  ECHO "Thank you!"
   ENDCLI
 ENDIF
 
