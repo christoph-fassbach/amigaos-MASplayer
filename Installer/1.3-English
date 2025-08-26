@@ -45,7 +45,7 @@ IF WARN
   ASK "Do you want to adapt the path before installing (y/N)?"
  
   IF WARN
-    ECHO "Enter your desired installation path and push Return:"
+    ECHO "Enter your desired installation path and press Return:"
     SETENV >NIL: TOOLSPATH ?
   ELSE
     SETENV >NIL: TOOLSPATH "SYS:Expansion/MASplayer"

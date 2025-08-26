@@ -42,32 +42,36 @@ Table Of Contents
 @{" 1.1   Introduction                  " LINK intro}
 
 Thank you very much for your interest in the MASplayer.
-It is a MP3 Player hardware for the parallelport of the Amiga Computer.
-It plays any kind of MP3 files and MP3 radio streams without stressing
-the CPU.
+It is a MP3 player hardware device for the parallel port
+of the Amiga Computer. It plays any kind of MP3 files and
+MP3 radio streams without stressing the CPU.
 
-The MAS player is a small module that takes over the task of decoding music
-compressed in MPEG and providing the resulting data as an analog signal.
-The decompression is done by a chip from Micronas Intermetall. This chip
-named 'MAS 3507D' is designed to decode different standards. 
-The most commonly used standard is MPEG 1, Layer 3, which is called 'MP3'
-for short. The sound chip CS4331KS and its successor CS4334 from 
-Crystal Cirrus Logic then generate the necessary analog signal, which can
-be fed to an amplifier or a stereo system.
+The MAS player is a small module that takes over the task of
+decoding music compressed in MPEG and provides the resulting
+data as an analog signal. The decompression is done by a chip
+from Micronas Intermetall. This chip named 'MAS 3507D' is designed
+to decode different standards.
 
-All variants connect to the standard parallel port of the Amiga and provide
-direct analog output of the decoded audio stream. 
+The most commonly used standard is MPEG 1, Layer 3, which is
+called 'MP3' for short. The sound chip CS4331KS and its successor
+CS4334 from Crystal Cirrus Logic then generate the necessary
+analog signal, which can be fed to an amplifier or a stereo system.
+
+All variants connect to the standard parallel port of the Amiga and
+provide direct analog output of the decoded audio stream. 
 
 @{" 1.2   MASplayer Std and Pro 1 + 2   " LINK intro}
 
 The original design dates back to 1999 and was developed by Dirk Conrad.
-The original, "Standard" or Std version of the player got later upgraded to
-use twice the clock and reduce the number of accesses to the parallel port
-by half thereby. See @{"MASplayer (1)" LINK refs} for further details.
+The original, "Standard" or Std version of the player was later upgraded
+to use twice the clock speed and thereby reduce the number of accesses
+to the parallel port by half.
+See @{"MASplayer (1)" LINK refs} for further details.
 
 You may even be able to upgrade to the Pro version by modifying a few 
-traces. Due to the lack of Std hardware, the MHI driver for the Std version
-is largely untested and provided for completeness reasons only.
+traces. Due to the lack of Std hardware, the MHI driver for the
+Std version is largely untested and provided for completeness
+reasons only.
 
 @{" 1.3   MASplayer Pro2+               " LINK MASplayer_pro2}
 @ENDNODE
@@ -78,8 +82,8 @@ is largely untested and provided for completeness reasons only.
 
 Deviating from the original design, it has an micro-USB port
 for +5V power supply and supports mixing Paula audio from the RCAs
-and MP3-sound internally. For using this feature, a short cable from
-the two RCA to a 3.5mm stereo phone connector is required.
+and MP3-sound internally. When using this feature, a short cable from
+the two RCA connectors to a 3.5 mm stereo phone connector is required.
 When mixing audio via MASplayer Pro2+, the hard separation of the
 Amiga's stereo channels is slightly lifted by mixing them with each
 other for a more comfortable "soft stereo mode".
@@ -91,9 +95,9 @@ other for a more comfortable "soft stereo mode".
 @TOC main
 @{" 1.4   MASplayer Pro2+ Bluetooth     " LINK MASplayer_pro2_bt}
 
-Based on the MASplayer Pro2+, +5V power supply is now expected via
-an USB-C port. Additionnaly, a Bluetooth 5.3 audio connection (LDAC/APTX)
-to any headphones, boomboxes, or alike was added.
+Based on the MASplayer Pro2+, +5V power supply is now required via
+an USB-C port. Additionally, a Bluetooth 5.3 audio connection (LDAC/APTX)
+to any headphones, boomboxes, or similar was added.
 
 @{"MASplayer Pro2+ Bluetooth top" system "MultiView ilbm/2+bt-top0.iff"}@{IMG ilbm/2+bt-top0.iff}
 @{"MASplayer Pro2+ Bluetooth bottom" system "MultiView ilbm/2+bt-bottom0.iff"}@{IMG ilbm/2+bt-bottom0.iff}
@@ -123,9 +127,10 @@ Please find the @{"hardware project sources (2)" LINK refs} in the references se
        - Kickstart 2.x / 3.x
        - MASplayer Pro 2+ Bluetooth
 
-Even though you can use the MASplayer with Kick 1.3 using MHIplay
-or HippoPlayer, Kick 2.x / 3.x is strongly recommended to
-yield maximum application compatibility. Kick 2.0+ is also much faster.
+Even though you can use the MASplayer with AmigaOS 1.3 using MHIplay
+or HippoPlayer, AmigaOS 2.x / 3.x is strongly recommended to
+yield maximum application compatibility.
+AmigaOS 2.0+ is also much faster.
 
 @{" 2     Installation                  " LINK hw_inst}
 @ENDNODE
@@ -138,15 +143,16 @@ yield maximum application compatibility. Kick 2.0+ is also much faster.
 Turn off your Amiga computer and connect your MASplayer to the
 parallel port. Take care to supply it with power via the USB port.
 While it is @{b}possible@{ub} to use an external power supply, we can
-@{b}not@{ub} wholeheartedly recommend doing so. You may inject high frequency
-noise, power spikes or power surges into your Amiga, leading to severe
-damage or instabilities. Please use an adapter to draw power from
-@{"joystick port (3)" LINK refs}, serial port or floppy port instead.
+@{b}not@{ub} wholeheartedly recommend doing so. You may inject high
+frequency noise, power spikes or power surges into your Amiga, leading
+to severe damage or instabilities. Please use an adapter to draw power
+from @{"joystick port (3)" LINK refs}, the serial port or floppy port
+instead.
 
-Please attach a stereo RCA to 3.5mm stereo phone connector adapter cable
-between your Amiga's Paula output and the input jack if you use a 
-MASplayer Pro 2+ or later. Connect your speakers to the output of the
-MASplayer accordingly.
+Please attach a stereo RCA connector to a 3.5mm stereo phone connector
+adapter cable between your Amiga's Paula output and the input jack if
+you use a MASplayer Pro 2+ or later. Connect your speakers to the
+output of the MASplayer accordingly.
 
 Please do not connect or disconnect anything while your Amiga is powered!
 
@@ -160,9 +166,10 @@ Please do not connect or disconnect anything while your Amiga is powered!
 @TOC main
 @{" 2.2   Software Installation         " LINK sw_inst}
 
-The MASplayer software package for OS 1.3 and 2.0 and above comes in
-- a single lha archive,
-- or on one ADF file.
+The MASplayer software package for AmigaOS 1.3 and 2.0 and later
+comes in:
+- a single lha archive
+- one ADF file.
 
 Please do not use the OS 1.3 installers to install your MASplayer on
 newer AmigaOS versions. They work well on OS 1.3, and while we try our
@@ -176,8 +183,8 @@ we cannot wield any magic.
 @TOC main
 @{" 2.2.1 OS 1.3 Software Installation  " LINK sw_inst13}
 
-Commodore and its successors only released the Installer for OS 2.0 and
-later. Therefore, the MASplayer OS 1.3 disk provides installers in
+Commodore and their successors only released the Installer for OS 2.0
+and later. Therefore, the MASplayer OS 1.3 disk provides installers in
 different languages as simple Shell scripts.
 In all languages, their functionality is the same:
 
@@ -256,9 +263,10 @@ in OS 1.3.
 On OS 2.0 and later, the MASplayer software installation relies on the
 Amiga Installer being available in path from the underlying OS.
 
-But Commodore only introduced the Installer in OS 2.1 and since then,
-it is part of the AmiagaOS installation. So before installing the
-MASplayer software on OS 2.0, you may need to install the Installer from:
+However, Commodore only introduced the Installer in OS 2.1 and
+since then, it is part of the AmigaOS installation. So before
+installing the MASplayer software on OS 2.0, you may need to install
+the Installer from:
 
 @{"https://aminet.net/util/misc/Installer-43_3.lha" system "openurl https://aminet.net/util/misc/Installer-43_3.lha"}
 
@@ -287,6 +295,7 @@ are available.
 
 "Novice User" installs all recommended parts without further questions
 to the recommended destinations. This should work fine for most users.
+
 Please note:
 - If you downgrade your CPU after installation and experience issues
   using the MASplayer, you may need to reinstall the drivers.
@@ -317,12 +326,13 @@ MASplayer comes with the MAS 3507D audio codec chip supporting
 MP3 (MPEG 1 and 2 audio layer II, layer III, with CBR, VBR, and ABR).
 
 MHI comes without separate system-wide preferences. Every application
-implements their own system of setting and selecting the desired MHI
-compatible library for the installed hardware.
-Per default, MASplayer's MHI driver is installed to
-Libs:mhi/mhimaspro.library on AmigaOS 2.0 and above.
+implements their own system of setting and selecting the desired
+MHI-compatible library for the installed hardware. By default,
+MASplayer's MHI driver is installed to Libs:mhi/mhimaspro.library on
+AmigaOS 2.0 and above.
+
 On AmigaOS 1.3, there are problems loading libraries from other
-locations than Libs:, hence it will be installed to 
+locations than Libs:, hence it will be installed to
 Libs:mhimaspro.library to ensure hassle-free usage.
 
 @{" 3.1   Example: MHI in AmigaAMP      " LINK mhi_amigaamp}
@@ -382,8 +392,7 @@ the button right next to it, where it reads "mhimaspro" above.
 Navigate to the mhimaspro.library in AmigaOS 1.3 that will be in Libs:;
 in AmigaOS 2.0 and later it will be in Libs:MHI.
 Select it, push the "OK" button, and save the preferences using the
-"Save" button.
-Add a few MP3 files to your playlist and enjoy!
+"Save" button. Add a few MP3 files to your playlist and enjoy!
 
 @{" 4     Driver troubleshooting        " LINK drivers}
 @ENDNODE
@@ -424,8 +433,8 @@ please be patient, we did our best!
 @{" 5     Appendices                    " LINK credits}
 @{" 5.1   Credits                       " LINK credits}
 
-Original concept & hardware design
-----------------------------------
+Original concept and hardware design
+------------------------------------
 Dirk Conrad
 
 MASplayer Pro 2+ hardware design
